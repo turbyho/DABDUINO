@@ -8,7 +8,7 @@ DABDUINO is Arduino DAB+ shield (digital radio broadcast) with DAC PCM5102 + SPD
 [<img src="https://img.youtube.com/vi/LBgsKTtB7Bs/0.jpg">](https://www.youtube.com/watch?v=LBgsKTtB7Bs)
 
 
-## Core info
+## Hardware
 Designed specifically to work with the DABDUINO
 
 (It will be available in March 2017)
