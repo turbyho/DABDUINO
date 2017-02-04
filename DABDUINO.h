@@ -11,7 +11,7 @@
 
 namespace constants
 {
-const int DEMO = 1;
+const int8_t DEMO = 0;
 }
 
 class DABDUINO

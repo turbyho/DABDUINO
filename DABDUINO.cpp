@@ -310,7 +310,7 @@ int8_t DABDUINO::disableNotification() {
 int8_t DABDUINO::getPlayStatus() {
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x05, 0x00, 0x00, 0x00, 0xFD };
+  byte dabCommand[7] = { 0xFE, 0x01, 0x05, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     if (dabDataSize) {
       return dabData[0] + 1;
@@ -391,8 +391,8 @@ int8_t DABDUINO::startSearchDabPrograms() {
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte chStart = 0;
-  byte chEnd = 94;
-  byte dabCommand[12] = { 0xFE, 0x01, 0x03, 0x00, 0x00, 0x02, chStart, chEnd, 0xFD };
+  byte chEnd = 40; // 40=EU, 94=ALL
+  byte dabCommand[9] = { 0xFE, 0x01, 0x03, 0x00, 0x00, 0x02, chStart, chEnd, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -403,7 +403,7 @@ int8_t DABDUINO::startSearchDabPrograms() {
 unsigned int DABDUINO::getDabProgramsIndex() {
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
-  byte dabCommand[12] = { 0xFE, 0x01, 0x16, 0x00, 0x00, 0x00, 0xFD };
+  byte dabCommand[7] = { 0xFE, 0x01, 0x16, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     if (dabDataSize == 4) {
       return (((long)dabData[0] << 24) + ((long)dabData[1] << 16) + ((long)dabData[2] << 8) + (long)dabData[3]);
