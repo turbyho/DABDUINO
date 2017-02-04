@@ -2,7 +2,7 @@
 
 This is a library for the DABDUINO - digital radio (DAB+) shield for Arduino
 
-DABDUINO is Arduino DAB+ shield (digital radio broadcast) with DAC PCM5102 + SPDIF. Compatible with 3.3V Arduino (Zero, M0, M0 PRO, Due etc.).
+DABDUINO is Arduino DAB+ (digital radio broadcast) shield with DAC PCM5102 + SPDIF. Compatible with 3.3V Arduino (Zero, M0, M0 PRO, Due etc.).
 
 ## Prototype
 [<img src="https://img.youtube.com/vi/LBgsKTtB7Bs/0.jpg">](https://www.youtube.com/watch?v=LBgsKTtB7Bs)
