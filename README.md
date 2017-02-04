@@ -1,6 +1,6 @@
 #DABDUINO - DAB+ digital radio arduino shield
 
-This is a library for the DABDUINO - DAB+ /digital radio/ arduino shield
+This is a library for the DABDUINO - digital radio (DAB+) shield for Arduino
 
 [<img src="https://img.youtube.com/vi/LBgsKTtB7Bs/0.jpg">](https://www.youtube.com/watch?v=LBgsKTtB7Bs)
 
