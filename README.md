@@ -1,4 +1,4 @@
-#DABDUINO - DAB+ digital radio arduino shield
+#DABDUINO - DAB+ (digital radio) Arduino shield
 
 This is a library for the DABDUINO - digital radio (DAB+) shield for Arduino
 
