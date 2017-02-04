@@ -6,12 +6,12 @@
 
 #include "DABDUINO.h"
 
+#define _DAB_SERIAL_PORT Serial1
+#define _DAB_RESET_PIN 2
 #define _DAB_DAC_MUTE_PIN 3
 #define _DAB_DAC_FLT_PIN 4
 #define _DAB_DAC_DEMP_PIN 5
 #define _DAB_SPI_CS_PIN 6
-#define _DAB_RESET_PIN 2
-#define _DAB_SERIAL_PORT Serial1
 
 DABDUINO dab = DABDUINO(_DAB_SERIAL_PORT, _DAB_RESET_PIN, _DAB_DAC_MUTE_PIN, _DAB_DAC_FLT_PIN, _DAB_DAC_DEMP_PIN, _DAB_SPI_CS_PIN);
 
@@ -147,6 +147,7 @@ void loop() {
   }
 
 
+  // BUTTON - CHANNEL UP
   reading = digitalRead(buttonPinUp);
   if (reading != buttonUpStateLast) {
     lastDebounceTime = millis();
@@ -170,7 +171,7 @@ void loop() {
   }
   buttonUpStateLast = reading;
 
-
+  // BUTTON - CHANNEL DOWN
   reading = digitalRead(buttonPinDown);
   if (reading != buttonDownStateLast) {
     lastDebounceTime = millis();
@@ -179,19 +180,15 @@ void loop() {
     if (reading != buttonDownState) {
       buttonDownState = reading;
       if (buttonDownState == HIGH) {
-        //programIndex--;
-        //if (programIndex < 1) programIndex = programsIndex;
-        //if (dab.tuneDabProgram(programIndex) == 1) {
-        //dab.getProgramLongName(programIndex, programName);
-        //Serial.print("Tuned program: (");
-        //Serial.print(programIndex);
-        //Serial.print(") ");
-        //Serial.println(dabText);
-
-        //delay(100);
-        Serial.println("Search DAB programs");
-        dab.startSearchDabPrograms();
-        //}
+        programIndex--;
+        if (programIndex < 1) programIndex = programsIndex;
+        if (dab.tuneDabProgram(programIndex)) {
+          dab.getProgramLongName(programIndex, dabText);
+          Serial.print("Tuned program: (");
+          Serial.print(programIndex);
+          Serial.print(") ");
+          Serial.println(dabText); 
+        }
       }
     }
   }
