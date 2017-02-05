@@ -1,8 +1,8 @@
 #DABDUINO - DAB+ (digital radio) Arduino library
 
-This is a library for the DABDUINO - digital radio (DAB+) shield for Arduino and works with Keystone T3B module.
+This is a library for the DABDUINO - digital radio (DAB+) / FM shield for Arduino and works with Keystone T3B module.
 
-DABDUINO is Arduino DAB+ (digital radio broadcast) shield based on Keystone T3B module with PCM5102 DAC + SPDIF.
+DABDUINO is DAB+ (digital radio broadcast) / FM shield based on Keystone T3B module with PCM5102 DAC + SPDIF.
 
 ## Prototype
 [<img src="https://img.youtube.com/vi/LBgsKTtB7Bs/0.jpg">](https://www.youtube.com/watch?v=LBgsKTtB7Bs)
