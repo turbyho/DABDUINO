@@ -415,52 +415,20 @@ unsigned int DABDUINO::getDabProgramsIndex() {
   }
 }
 
-/*
+unsigned int DABDUINO::getTunedIndex() {
 
-  int DABDUINO::tuneFmProgram(long frequency) {
-  byte dabReturn[DAB_MAX_TEXT_LENGTH];
-  byte Byte1 = ((frequency >> 0) & 0xFF);
-  byte Byte2 = ((frequency >> 8) & 0xFF);
-  byte Byte3 = ((frequency >> 16) & 0xFF);
-  byte Byte4 = ((frequency >> 24) & 0xFF);
-  byte comm[12] = { 0xFE, 0x01, 0x00, 0x00, 0x00, 0x05, 0x01, Byte4, Byte3, Byte2, Byte1, 0xFD };
-  unsigned int dabReturnLength = sendCommand(comm, dabReturn, DAB_MAX_TEXT_LENGTH);
-  if (dabReturn[2] == 0x02) {
-    return -1;
+  byte dabData[DAB_MAX_DATA_LENGTH];
+  unsigned int dabDataSize;
+  byte dabCommand[7] = { 0xFE, 0x01, 0x07, 0x00, 0x00, 0x00, 0xFD };
+  if (sendCommand(dabCommand, dabData, &dabDataSize)) {
+    if (dabDataSize == 4) {
+      return (((long)dabData[0] << 24) + ((long)dabData[1] << 16) + ((long)dabData[2] << 8) + (long)dabData[3]);
+    }
+    return 0;
   } else {
-    return 1;
+    return 0;
   }
-  }
-
-  int DABDUINO::seekFmProgram(int searchDirection) {
-  if (searchDirection < 0) searchDirection = 0;
-  if (searchDirection > 1) searchDirection = 1;
-  byte dabReturn[DAB_MAX_TEXT_LENGTH];
-  byte comm[8] = { 0xFE, 0x01, 0x02, 0x00, 0x00, 0x01, searchDirection, 0xFD };
-  unsigned int dabReturnLength = sendCommand(comm, dabReturn, DAB_MAX_TEXT_LENGTH);
-  if (dabReturn[2] == 0x02) {
-    return -1;
-  } else {
-    return 1;
-  }
-  }
-
-  unsigned int DABDUINO::getTunedIndex() {
-
-  byte dabReturn[7 + DAB_MAX_TEXT_LENGTH];
-  byte comm[7] = { 0xFE, 0x01, 0x07, 0x00, 0x00, 0x00, 0xFD };
-  int dabReturnLength = sendCommand(comm, dabReturn, 7 + DAB_MAX_TEXT_LENGTH);
-
-  if (dabReturn[2] == 0x02) {
-    return -1;
-  } else {
-    return ((long)dabReturn[6] << 24) + ((long)dabReturn[7] << 16) + ((long)dabReturn[8] << 8) + (long)dabReturn[9];
-  }
-  }
-
-
-*/
-
+ }
 
 int8_t DABDUINO::getProgramShortName(unsigned int programIndex, char dabText[]) {
 
@@ -517,6 +485,35 @@ int8_t DABDUINO::getProgrameText(char dabText[]) {
   }
 }
 
+// FM
+
+int8_t DABDUINO::tuneFmProgram(long frequency) {
+  byte dabData[DAB_MAX_DATA_LENGTH];
+  unsigned int dabDataSize;
+  byte Byte0 = ((frequency >> 0) & 0xFF);
+  byte Byte1 = ((frequency >> 8) & 0xFF);
+  byte Byte2 = ((frequency >> 16) & 0xFF);
+  byte Byte3 = ((frequency >> 24) & 0xFF);
+  byte dabCommand[12] = { 0xFE, 0x01, 0x00, 0x00, 0x00, 0x05, 0x01, Byte3, Byte2, Byte1, Byte0, 0xFD };
+  if (sendCommand(dabCommand, dabData, &dabDataSize)) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+int8_t DABDUINO::seekFmProgram(byte searchDirection) {
+  byte dabData[DAB_MAX_DATA_LENGTH];
+  unsigned int dabDataSize;
+  if (searchDirection < 0) searchDirection = 0;
+  if (searchDirection > 1) searchDirection = 1;
+  byte dabCommand[8] = { 0xFE, 0x01, 0x02, 0x00, 0x00, 0x01, searchDirection, 0xFD };
+  if (sendCommand(dabCommand, dabData, &dabDataSize)) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
 
 
 

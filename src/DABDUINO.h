@@ -38,16 +38,15 @@ class DABDUINO
     int8_t setVolume(byte volumeLevel);
     int8_t startSearchDabPrograms();
     int8_t getPlayStatus();
+    unsigned int getTunedIndex();
     unsigned int getDabProgramsIndex();
     int8_t tuneDabProgram(unsigned int programIndex);
     int8_t getProgramShortName(unsigned int programIndex, char dabText[]);
     int8_t getProgramLongName(unsigned int programIndex, char dabText[]);
     int8_t getProgrameText(char dabText[]);
 
-
     int8_t tuneFmProgram(long frequency);
-    int8_t seekFmProgram(int seekDirection);
-    unsigned int getTunedIndex();
+    int8_t seekFmProgram(byte seekDirection);
 
   private:
     HardwareSerial *_Serial;
