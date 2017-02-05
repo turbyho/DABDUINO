@@ -392,7 +392,7 @@ int8_t DABDUINO::startSearchDabPrograms() {
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte chStart = 0;
-  byte chEnd = 40; // 40=EU, 94=ALL
+  byte chEnd = 40; // 40=EU, 94=whole world
   byte dabCommand[9] = { 0xFE, 0x01, 0x03, 0x00, 0x00, 0x02, chStart, chEnd, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
