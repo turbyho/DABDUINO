@@ -9,4 +9,4 @@ DABDUINO is Arduino DAB+ (digital radio broadcast) shield based on Keystone T3B 
 
 
 ## Hardware
-Designed specifically to work with the DABDUINO and with Keystone T3B module. The DABDUINO shield is compatible with 3.3V Arduino (Zero, M0, M0 PRO, Due etc.). 
+Designed specifically to work with the DABDUINO and works with Keystone T3B module. The DABDUINO shield is compatible with 3.3V Arduino (Zero, M0, M0 PRO, Due etc.). 
