@@ -9,6 +9,6 @@ DABDUINO is Arduino DAB+ (digital radio broadcast) shield with DAC PCM5102 + SPD
 
 
 ## Hardware
-Designed specifically to work with the DABDUINO
+Designed specifically to work with the DABDUINO or Keystone T3B module
 
 (It will be available in March 2017)
