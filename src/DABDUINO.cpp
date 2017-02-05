@@ -157,6 +157,7 @@ int8_t DABDUINO::isEvent() {
    RETURN EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
 */
 int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
+
   byte dabReturn[128];
   byte isPacketCompleted = 0;
   unsigned int byteIndex = 0;
@@ -199,6 +200,7 @@ int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
    Send command to DAB module and wait for answer
 */
 int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *dabDataSize) {
+
   byte dabReturn[6];
   byte isPacketCompleted = 0;
   unsigned int byteIndex = 0;
@@ -251,6 +253,7 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
    Reset DAB module with database
 */
 int8_t DABDUINO::resetDabModule() {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte dabCommand[8] = { 0xFE, 0x00, 0x01, 0x00, 0x00, 0x01, 1, 0xFD };
@@ -266,6 +269,7 @@ int8_t DABDUINO::resetDabModule() {
    Test for DAB module is ready for communication
 */
 int8_t DABDUINO::isDabReady() {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFD };
@@ -280,6 +284,7 @@ int8_t DABDUINO::isDabReady() {
    Enable event notification
 */
 int8_t DABDUINO::enableNotification() {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte dabCommand[9] = { 0xFE, 0x07, 0x00, 0x00, 0x00, 0x02, 0x00, 0x7F, 0xFD };
@@ -294,6 +299,7 @@ int8_t DABDUINO::enableNotification() {
    Disable event notification
 */
 int8_t DABDUINO::disableNotification() {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte dabCommand[9] = { 0xFE, 0x07, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0xFD };
@@ -309,6 +315,7 @@ int8_t DABDUINO::disableNotification() {
    RETURN VALUE: 1=playing, 2=searching, 3=tuning, 4=stop, 5=sorting change, 6=reconfiguration
 */
 int8_t DABDUINO::getPlayStatus() {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x05, 0x00, 0x00, 0x00, 0xFD };
@@ -328,6 +335,7 @@ int8_t DABDUINO::getPlayStatus() {
    DABDUINO: I2S for analog output (cinch), SPDIV for optical digital output
 */
 int8_t DABDUINO::setAudioOutputType(boolean spdiv, boolean i2s) {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte s;
@@ -353,6 +361,7 @@ int8_t DABDUINO::setAudioOutputType(boolean spdiv, boolean i2s) {
    programIndex = 1..9999999 (see programs index)
 */
 int8_t DABDUINO::tuneDabProgram(unsigned int programIndex) {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   programIndex--;
@@ -373,6 +382,7 @@ int8_t DABDUINO::tuneDabProgram(unsigned int programIndex) {
    volumeLevel = 0..16
 */
 int8_t DABDUINO::setVolume(byte volumeLevel) {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   if (volumeLevel < 0) volumeLevel = 0;
@@ -389,6 +399,7 @@ int8_t DABDUINO::setVolume(byte volumeLevel) {
  * Search all DAB bands for programs
  */
 int8_t DABDUINO::startSearchDabPrograms() {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte chStart = 0;
@@ -401,7 +412,11 @@ int8_t DABDUINO::startSearchDabPrograms() {
   }
 }
 
+/*
+ * Get DAB stations index (number of programs in database)
+ */
 unsigned int DABDUINO::getDabProgramsIndex() {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x16, 0x00, 0x00, 0x00, 0xFD };
@@ -415,6 +430,9 @@ unsigned int DABDUINO::getDabProgramsIndex() {
   }
 }
 
+/*
+ * Get DAB station index, get tuned FM station frequency
+ */
 unsigned int DABDUINO::getTunedIndex() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -430,6 +448,9 @@ unsigned int DABDUINO::getTunedIndex() {
   }
  }
 
+/*
+ * Get DAB station short name
+ */
 int8_t DABDUINO::getProgramShortName(unsigned int programIndex, char dabText[]) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -446,6 +467,9 @@ int8_t DABDUINO::getProgramShortName(unsigned int programIndex, char dabText[]) 
   }
 }
 
+/*
+ * Get DAB station long name
+ */
 int8_t DABDUINO::getProgramLongName(unsigned int programIndex, char dabText[]) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -462,6 +486,9 @@ int8_t DABDUINO::getProgramLongName(unsigned int programIndex, char dabText[]) {
   }
 }
 
+/*
+ * Get DAB text event
+ */
 int8_t DABDUINO::getProgrameText(char dabText[]) {
 
   char dabTextLast[DAB_MAX_TEXT_LENGTH];
@@ -485,9 +512,11 @@ int8_t DABDUINO::getProgrameText(char dabText[]) {
   }
 }
 
-// FM
-
+/*
+ * Tune FM program - frequency: 87500..108000 MHz
+ */
 int8_t DABDUINO::tuneFmProgram(long frequency) {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   byte Byte0 = ((frequency >> 0) & 0xFF);
@@ -502,7 +531,11 @@ int8_t DABDUINO::tuneFmProgram(long frequency) {
   }
 }
 
+/*
+ * Seek FM program - searchDirection: 0=backward, 1=forward
+ */
 int8_t DABDUINO::seekFmProgram(byte searchDirection) {
+
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
   if (searchDirection < 0) searchDirection = 0;
