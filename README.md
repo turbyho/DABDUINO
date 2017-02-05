@@ -1,4 +1,4 @@
-#DABDUINO - DAB+ (digital radio) Arduino shield
+#DABDUINO - DAB+ (digital radio) Arduino library
 
 This is a library for the DABDUINO - digital radio (DAB+) shield for Arduino and works with Keystone T3B module.
 
