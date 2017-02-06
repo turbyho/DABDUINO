@@ -158,15 +158,14 @@ int8_t DABDUINO::isEvent() {
 */
 int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
 
-  byte dabReturn[128];
+  byte dabReturn[6];
   byte isPacketCompleted = 0;
   unsigned int byteIndex = 0;
   unsigned int dataIndex = 0;
   byte serialData = 0;
-  unsigned int maxSize = 128;
   *eventDataSize = 128;
   unsigned long endMillis = millis() + 200; // timeout for answer from module = 200ms
-  while (millis() < endMillis) {
+  while (millis() < endMillis && dataIndex < DAB_MAX_DATA_LENGTH) {
     if (_Serial->available() > 0) {
       serialData = _Serial->read();
       if (serialData == 0xFE) {
@@ -218,7 +217,7 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
   _Serial->flush();
   byteIndex = 0;
   unsigned long endMillis = millis() + 200; // timeout for answer from module = 200ms
-  while (millis() < endMillis) {
+  while (millis() < endMillis && dataIndex < DAB_MAX_DATA_LENGTH) {
     if (_Serial->available() > 0) {
       serialData = _Serial->read();
       if (serialData == 0xFE) {
