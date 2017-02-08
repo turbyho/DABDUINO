@@ -97,13 +97,13 @@ void setup() {
 
   programIndex = 1;
 
-  if (dab.tuneDabProgram(programIndex)) {}
-
-  if (dab.getProgramLongName(programIndex, dabText)) {
-    Serial.print("Tuned program: (");
-    Serial.print(programIndex);
-    Serial.print(") ");
-    Serial.println(dabText);
+  if (dab.tuneDabProgram(programIndex)) {
+    if (dab.getProgramLongName(programIndex, dabText)) {
+      Serial.print("Tuned program: (");
+      Serial.print(programIndex);
+      Serial.print(") ");
+      Serial.println(dabText);
+    }
   }
 }
 

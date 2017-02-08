@@ -224,7 +224,7 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
         byteIndex = 0;
         dataIndex = 0;
       }
-      if (*dabDataSize && dataIndex < *eventDataSize) {
+      if (*dabDataSize && dataIndex < *dabDataSize) {
         dabData[dataIndex++] = serialData;
       }
       if (byteIndex <= 5) {
@@ -241,6 +241,9 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
     }
   }
   if (isPacketCompleted == 1 && !(dabReturn[1] == 0x00 && dabReturn[2] == 0x02)) {
+    if(dataIndex) {
+      dabData[dataIndex - 1] = 0x00;
+    }
     return 1;
   } else {
     return 0;
