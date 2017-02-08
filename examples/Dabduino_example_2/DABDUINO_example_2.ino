@@ -124,7 +124,21 @@ void setup() {
 
 void loop() {
 
-  // EVENTS
+  if(millis() % 10000) {
+    
+    if (dab.tuneDabProgram(programIndex)) {
+      if (dab.getProgramLongName(programIndex, dabText)) {
+        Serial.print("Tuned program: (");
+        Serial.print(programIndex);
+        Serial.print(") ");
+        Serial.println(dabText);
+      }
+      programIndex++;
+      if (programIndex > programsIndex) programIndex = 1;
+    }
+  }
+
+  // DAB EVENTS
   // EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
   if (dab.isEvent()) {
     byte eventData[16];
@@ -146,55 +160,6 @@ void loop() {
         break;
     }
   }
-
-
-  // BUTTON - CHANNEL UP
-  reading = digitalRead(buttonPinUp);
-  if (reading != buttonUpStateLast) {
-    lastDebounceTime = millis();
-  }
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    if (reading != buttonUpState) {
-      buttonUpState = reading;
-      if (buttonUpState == HIGH) {
-        programIndex++;
-        if (programIndex > programsIndex) programIndex = 1;
-        if (dab.tuneDabProgram(programIndex)) {
-          if (dab.getProgramLongName(programIndex, dabText)) {
-            Serial.print("Tuned program: (");
-            Serial.print(programIndex);
-            Serial.print(") ");
-            Serial.println(dabText);
-          }
-        }
-      }
-    }
-  }
-  buttonUpStateLast = reading;
-
-  // BUTTON - CHANNEL DOWN
-  reading = digitalRead(buttonPinDown);
-  if (reading != buttonDownStateLast) {
-    lastDebounceTime = millis();
-  }
-  if ((millis() - lastDebounceTime) > debounceDelay) {
-    if (reading != buttonDownState) {
-      buttonDownState = reading;
-      if (buttonDownState == HIGH) {
-        programIndex--;
-        if (programIndex < 1) programIndex = programsIndex;
-        if (dab.tuneDabProgram(programIndex)) {
-          dab.getProgramLongName(programIndex, dabText);
-          Serial.print("Tuned program: (");
-          Serial.print(programIndex);
-          Serial.print(") ");
-          Serial.println(dabText); 
-        }
-      }
-    }
-  }
-  buttonDownStateLast = reading;
-
 }
 
 
