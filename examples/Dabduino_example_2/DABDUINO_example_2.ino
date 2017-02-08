@@ -22,18 +22,6 @@ unsigned int programIndex = 0;
 int8_t isNewDabText = 0;
 int8_t isNewDabTextSame = 0;
 
-// Others constants & variables
-
-#define buttonPinUp 13
-#define buttonPinDown 12
-
-int8_t reading = 0;
-unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
-unsigned long debounceDelay = 50;
-int8_t buttonUpState = 0;
-int8_t buttonUpStateLast = 0;
-int8_t buttonDownState = 0;
-int8_t buttonDownStateLast = 0;
 
 void setup() {
 
@@ -125,7 +113,7 @@ void setup() {
 void loop() {
 
   if(millis() % 10000) {
-    
+
     if (dab.tuneDabProgram(programIndex)) {
       if (dab.getProgramLongName(programIndex, dabText)) {
         Serial.print("Tuned program: (");
