@@ -1,5 +1,5 @@
 /*
-  DABDUINO.cpps - Library for DABDUINO / DAB+ - digital radio shield for Arduino.
+  DABDUINO.cpp - Library for DABDUINO / DAB+ - digital radio shield for Arduino.
   Created by Tomas Urbanek, Januar 2, 2017.
   Released into the public domain.
 */
