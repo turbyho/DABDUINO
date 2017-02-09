@@ -188,6 +188,9 @@ int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
       byteIndex++;
     }
   }
+  while (_Serial->available() > 0) {
+    _Serial->read();
+  }
   if (dabReturn[1] == 0x07 && isPacketCompleted == 1) {
     return dabReturn[2] + 1;
   } else {
