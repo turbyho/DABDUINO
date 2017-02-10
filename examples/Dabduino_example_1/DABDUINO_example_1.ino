@@ -20,8 +20,6 @@ char dabText[DAB_MAX_TEXT_LENGTH];
 unsigned int programsIndex = 0;
 unsigned int programIndex = 0;
 
-// Others constants & variables
-
 void setup() {
 
   Serial.begin(57600);

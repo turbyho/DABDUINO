@@ -19,9 +19,6 @@ DABDUINO dab = DABDUINO(_DAB_SERIAL_PORT, _DAB_RESET_PIN, _DAB_DAC_MUTE_PIN, _DA
 char dabText[DAB_MAX_TEXT_LENGTH];
 unsigned int programsIndex = 0;
 unsigned int programIndex = 0;
-int8_t isNewDabText = 0;
-int8_t isNewDabTextSame = 0;
-
 
 void setup() {
 
