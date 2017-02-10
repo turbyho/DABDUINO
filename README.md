@@ -7,7 +7,7 @@ DAB+ (digital radio) / FM shield based on Keystone T3B module and with 32-bit, 3
 ##How to install
 Open library manager in Arduino IDE and install the DABDUINO library.
 
-#### Final release
+## Final release
 March 2017
 
 #### Second prototype video
