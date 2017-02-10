@@ -7,7 +7,5 @@ DAB+ (digital radio) / FM shield based on Keystone T3B module and with 32-bit, 3
 ## First prototype video
 [<img src="https://img.youtube.com/vi/LBgsKTtB7Bs/0.jpg">](https://www.youtube.com/watch?v=LBgsKTtB7Bs)
 
-----
-
 ## Pinout
 ![DABDUINO PINOUT](doc/dabduino_pinout.png)
