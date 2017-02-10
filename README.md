@@ -13,5 +13,5 @@ March 2017
 #### First prototype video
 [<img src="https://img.youtube.com/vi/Ivv96sOVvz4/0.jpg">](https://www.youtube.com/watch?v=Ivv96sOVvz4)
 
-## Pinout
+#### Pinout
 ![DABDUINO PINOUT](doc/dabduino_pinout.png)
