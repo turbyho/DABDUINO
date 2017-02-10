@@ -22,8 +22,6 @@ unsigned int programIndex = 0;
 
 void setup() {
 
-  pinMode(buttonPinUp, INPUT);
-  pinMode(buttonPinDown, INPUT);
   Serial.begin(57600);
 
   Serial.println("DAB RESET & START");
@@ -91,8 +89,8 @@ void setup() {
     Serial.println("Set volume");
   }
 
-  if (dab.enableNotification()) {
-    Serial.println("Notification enabled");
+  if (dab.enableEventNotification()) {
+    Serial.println("Event notification enabled");
   }
 
   programIndex = 1;

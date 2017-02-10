@@ -32,7 +32,7 @@ public:
   int8_t readEvent(byte eventData[], unsigned int *eventDataSize);
   int8_t sendCommand(byte dabCommand[], byte dabData[], unsigned int *dabDataSize);
 
-  int8_t enableNotification();
+  int8_t enableEventNotification();
   int8_t disableNotification();
   int8_t setAudioOutputType(boolean spdiv, boolean i2s);
   int8_t setVolume(byte volumeLevel);
