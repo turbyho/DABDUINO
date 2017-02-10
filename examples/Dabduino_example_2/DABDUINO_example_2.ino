@@ -1,7 +1,7 @@
 /*
-	DABDUINO basic example 1
-	DABDUINO is DAB+ digital radio shield for Arduino
-	www.dabduino.com
+  DABDUINO basic example 1
+  DABDUINO is DAB+ digital radio shield for Arduino
+  www.dabduino.com
 */
 
 #include "DABDUINO.h"
@@ -48,24 +48,24 @@ void setup() {
       Serial.println();
       // 1=playing, 2=searching, 3=tuning, 4=stop, 5=sorting change, 6=reconfiguration
       switch (status) {
-        case 1:
-          Serial.print("Playing");
-          break;
-        case 2:
-          Serial.print("Searching");
-          break;
-        case 3:
-          Serial.print("Tuning");
-          break;
-        case 4:
-          Serial.print("Stop");
-          break;
-        case 5:
-          Serial.print("Sorting");
-          break;
-        case 6:
-          Serial.print("Reconfiguration");
-          break;
+      case 1:
+        Serial.print("Playing");
+        break;
+      case 2:
+        Serial.print("Searching");
+        break;
+      case 3:
+        Serial.print("Tuning");
+        break;
+      case 4:
+        Serial.print("Stop");
+        break;
+      case 5:
+        Serial.print("Sorting");
+        break;
+      case 6:
+        Serial.print("Reconfiguration");
+        break;
       }
     }
     lastStatus = status;
@@ -112,7 +112,7 @@ void setup() {
 
 void loop() {
 
-  if(millis() % 10000) {
+  if (millis() % 10000) {
 
     if (dab.tuneDabProgram(programIndex)) {
       if (dab.getProgramLongName(programIndex, dabText)) {
@@ -133,19 +133,19 @@ void loop() {
     unsigned int dataSize;
     int8_t eventTyp = dab.readEvent(eventData, &dataSize);
     switch (eventTyp) {
-      case 1:
-        Serial.println("DAB program search finished.");
-        break;
-      case 2:
-        //do something when New DAB progam text
-        int8_t res = dab.getProgrameText(dabText);
-        if (res == 1) { // new text
-          Serial.print("DAB text event: ");
-          Serial.println(dabText);
-        } else if (res == 2) { // same text
-          Serial.println("DAB text event: the new text is the same...");
-        }
-        break;
+    case 1:
+      Serial.println("DAB program search finished.");
+      break;
+    case 2:
+      //do something when New DAB progam text
+      int8_t res = dab.getProgrameText(dabText);
+      if (res == 1) { // new text
+        Serial.print("DAB text event: ");
+        Serial.println(dabText);
+      } else if (res == 2) { // same text
+        Serial.println("DAB text event: the new text is the same...");
+      }
+      break;
     }
   }
 }

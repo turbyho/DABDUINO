@@ -1,8 +1,8 @@
 /*
-  DABDUINO.cpp - Library for DABDUINO / DAB+ - digital radio shield for Arduino.
-  Created by Tomas Urbanek, Januar 2, 2017.
-  Released into the public domain.
-*/
+ *  DABDUINO.cpp - Library for DABDUINO / DAB+ - digital radio shield for Arduino.
+ *  Created by Tomas Urbanek, Januar 2, 2017.
+ *  Released into the public domain.
+ */
 
 #include "DABDUINO.h"
 
@@ -31,81 +31,81 @@ byte DABDUINO::charToAscii(byte byte1, byte byte0) {
 
     switch (byte0)
     {
-      case 0x8A: return (0x53); break;
-      case 0x8C: return (0x53); break;
-      case 0x8D: return (0x54); break;
-      case 0x8E: return (0x5a); break;
-      case 0x8F: return (0x5a); break;
-      case 0x9A: return (0x73); break;
-      case 0x9D: return (0x74); break;
-      case 0x9E: return (0x7a); break;
-      case 0xC0: return (0x41); break;
-      case 0xC1: return (0x41); break;
-      case 0xC2: return (0x41); break;
-      case 0xC3: return (0x41); break;
-      case 0xC4: return (0x41); break;
-      case 0xC5: return (0x41); break;
-      case 0xC7: return (0x43); break;
-      case 0xC8: return (0x45); break;
-      case 0xC9: return (0x45); break;
-      case 0xCA: return (0x45); break;
-      case 0xCB: return (0x45); break;
-      case 0xCC: return (0x49); break;
-      case 0xCD: return (0x49); break;
-      case 0xCE: return (0x49); break;
-      case 0xCF: return (0x49); break;
-      case 0xD0: return (0x44); break;
-      case 0xD1: return (0x4e); break;
-      case 0xD2: return (0x4f); break;
-      case 0xD3: return (0x4f); break;
-      case 0xD4: return (0x4f); break;
-      case 0xD5: return (0x4f); break;
-      case 0xD6: return (0x4f); break;
-      case 0xD8: return (0x4f); break;
-      case 0xD9: return (0x55); break;
-      case 0xDA: return (0x55); break;
-      case 0xDB: return (0x55); break;
-      case 0xDC: return (0x55); break;
-      case 0xDD: return (0x59); break;
-      case 0xE0: return (0x61); break;
-      case 0xE1: return (0x61); break;
-      case 0xE2: return (0x61); break;
-      case 0xE3: return (0x61); break;
-      case 0xE4: return (0x61); break;
-      case 0xE5: return (0x61); break;
-      case 0xE7: return (0x63); break;
-      case 0xE8: return (0x65); break;
-      case 0xE9: return (0x65); break;
-      case 0xEA: return (0x65); break;
-      case 0xEB: return (0x65); break;
-      case 0xEC: return (0x69); break;
-      case 0xED: return (0x69); break;
-      case 0xEE: return (0x69); break;
-      case 0xEF: return (0x69); break;
-      case 0xF1: return (0x6e); break;
-      case 0xF2: return (0x6f); break;
-      case 0xF3: return (0x6f); break;
-      case 0xF4: return (0x6f); break;
-      case 0xF5: return (0x6f); break;
-      case 0xF6: return (0x6f); break;
-      case 0xF9: return (0x75); break;
-      case 0xFA: return (0x75); break;
-      case 0xFB: return (0x75); break;
-      case 0xFC: return (0x75); break;
-      case 0xFD: return (0x79); break;
-      case 0xFF: return (0x79); break;
+    case 0x8A: return (0x53); break;
+    case 0x8C: return (0x53); break;
+    case 0x8D: return (0x54); break;
+    case 0x8E: return (0x5a); break;
+    case 0x8F: return (0x5a); break;
+    case 0x9A: return (0x73); break;
+    case 0x9D: return (0x74); break;
+    case 0x9E: return (0x7a); break;
+    case 0xC0: return (0x41); break;
+    case 0xC1: return (0x41); break;
+    case 0xC2: return (0x41); break;
+    case 0xC3: return (0x41); break;
+    case 0xC4: return (0x41); break;
+    case 0xC5: return (0x41); break;
+    case 0xC7: return (0x43); break;
+    case 0xC8: return (0x45); break;
+    case 0xC9: return (0x45); break;
+    case 0xCA: return (0x45); break;
+    case 0xCB: return (0x45); break;
+    case 0xCC: return (0x49); break;
+    case 0xCD: return (0x49); break;
+    case 0xCE: return (0x49); break;
+    case 0xCF: return (0x49); break;
+    case 0xD0: return (0x44); break;
+    case 0xD1: return (0x4e); break;
+    case 0xD2: return (0x4f); break;
+    case 0xD3: return (0x4f); break;
+    case 0xD4: return (0x4f); break;
+    case 0xD5: return (0x4f); break;
+    case 0xD6: return (0x4f); break;
+    case 0xD8: return (0x4f); break;
+    case 0xD9: return (0x55); break;
+    case 0xDA: return (0x55); break;
+    case 0xDB: return (0x55); break;
+    case 0xDC: return (0x55); break;
+    case 0xDD: return (0x59); break;
+    case 0xE0: return (0x61); break;
+    case 0xE1: return (0x61); break;
+    case 0xE2: return (0x61); break;
+    case 0xE3: return (0x61); break;
+    case 0xE4: return (0x61); break;
+    case 0xE5: return (0x61); break;
+    case 0xE7: return (0x63); break;
+    case 0xE8: return (0x65); break;
+    case 0xE9: return (0x65); break;
+    case 0xEA: return (0x65); break;
+    case 0xEB: return (0x65); break;
+    case 0xEC: return (0x69); break;
+    case 0xED: return (0x69); break;
+    case 0xEE: return (0x69); break;
+    case 0xEF: return (0x69); break;
+    case 0xF1: return (0x6e); break;
+    case 0xF2: return (0x6f); break;
+    case 0xF3: return (0x6f); break;
+    case 0xF4: return (0x6f); break;
+    case 0xF5: return (0x6f); break;
+    case 0xF6: return (0x6f); break;
+    case 0xF9: return (0x75); break;
+    case 0xFA: return (0x75); break;
+    case 0xFB: return (0x75); break;
+    case 0xFC: return (0x75); break;
+    case 0xFD: return (0x79); break;
+    case 0xFF: return (0x79); break;
     }
   }
 
   if (byte1 == 0x01) {
     switch (byte0)
     {
-      case 0x1B: return (0x65); break; // ě > e
-      case 0x48: return (0x6e); break; // ň > n
-      case 0x59: return (0x72); break; // ř > r
-      case 0x0D: return (0x63); break; // č > c
-      case 0x7E: return (0x7A); break; // ž > z
-      case 0x0C: return (0x43); break; // Č > C
+    case 0x1B: return (0x65); break; // ě > e
+    case 0x48: return (0x6e); break; // ň > n
+    case 0x59: return (0x72); break; // ř > r
+    case 0x0D: return (0x63); break; // č > c
+    case 0x7E: return (0x7A); break; // ž > z
+    case 0x0C: return (0x43); break; // Č > C
     }
   }
 
@@ -114,34 +114,34 @@ byte DABDUINO::charToAscii(byte byte1, byte byte0) {
 
 
 void DABDUINO::initialization() {
-  	
+
   // DAC MUTE
   pinMode(dacMutePin, OUTPUT);
   digitalWrite(dacMutePin, HIGH);
-  
+
   // DAC FLT
   pinMode(dacFltPin, OUTPUT);
   digitalWrite(dacFltPin, HIGH);
-  
+
   // DAC DEMP
   pinMode(dacDempPin, OUTPUT);
   digitalWrite(dacDempPin, LOW);
-  
+
   // SPI CS
   pinMode(spiCsPin, OUTPUT);
   digitalWrite(spiCsPin, LOW);
-  
+
   // DAB module SERIAL
   _Serial->begin(57600);
   _Serial->setTimeout(50);
-  
+
   // DAB module RESET
   pinMode(resetPin, OUTPUT);
   digitalWrite(resetPin, LOW);
   delay(100);
   digitalWrite(resetPin, HIGH);
   delay(1000);
-  
+
   while (!isDabReady()) {
     delay(100);
   }
@@ -153,9 +153,9 @@ int8_t DABDUINO::isEvent() {
 }
 
 /*
-   Read event
-   RETURN EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
-*/
+ *   Read event
+ *   RETURN EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
+ */
 int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
 
   byte dabReturn[6];
@@ -199,8 +199,8 @@ int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
 }
 
 /*
-   Send command to DAB module and wait for answer
-*/
+ *  Send command to DAB module and wait for answer
+ */
 int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *dabDataSize) {
 
   byte dabReturn[6];
@@ -244,7 +244,7 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
     }
   }
   if (isPacketCompleted == 1 && !(dabReturn[1] == 0x00 && dabReturn[2] == 0x02)) {
-    if(dataIndex) {
+    if (dataIndex) {
       dabData[dataIndex - 1] = 0x00;
     }
     return 1;
@@ -255,8 +255,8 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
 
 
 /*
-   Reset DAB module with database
-*/
+ *   Reset DAB module with database
+ */
 int8_t DABDUINO::resetDabModule() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -271,8 +271,8 @@ int8_t DABDUINO::resetDabModule() {
 }
 
 /*
-   Test for DAB module is ready for communication
-*/
+ *   Test for DAB module is ready for communication
+ */
 int8_t DABDUINO::isDabReady() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -286,8 +286,8 @@ int8_t DABDUINO::isDabReady() {
 }
 
 /*
-   Enable event notification
-*/
+ *   Enable event notification
+ */
 int8_t DABDUINO::enableNotification() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -301,8 +301,8 @@ int8_t DABDUINO::enableNotification() {
 }
 
 /*
-   Disable event notification
-*/
+ *   Disable event notification
+ */
 int8_t DABDUINO::disableNotification() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -316,9 +316,9 @@ int8_t DABDUINO::disableNotification() {
 }
 
 /*
-   Radio module play status
-   RETURN VALUE: 1=playing, 2=searching, 3=tuning, 4=stop, 5=sorting change, 6=reconfiguration
-*/
+ *   Radio module play status
+ *   RETURN VALUE: 1=playing, 2=searching, 3=tuning, 4=stop, 5=sorting change, 6=reconfiguration
+ */
 int8_t DABDUINO::getPlayStatus() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -336,9 +336,9 @@ int8_t DABDUINO::getPlayStatus() {
 }
 
 /*
-   Set audio output channels (SPDIV, I2S /DAC/)
-   DABDUINO: I2S for analog output (cinch), SPDIV for optical digital output
-*/
+ *   Set audio output channels (SPDIV, I2S /DAC/)
+ *   DABDUINO: I2S for analog output (cinch), SPDIV for optical digital output
+ */
 int8_t DABDUINO::setAudioOutputType(boolean spdiv, boolean i2s) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -362,9 +362,9 @@ int8_t DABDUINO::setAudioOutputType(boolean spdiv, boolean i2s) {
 }
 
 /*
-   Tune DAB program
-   programIndex = 1..9999999 (see programs index)
-*/
+ *   Tune DAB program
+ *   programIndex = 1..9999999 (see programs index)
+ */
 int8_t DABDUINO::tuneDabProgram(unsigned int programIndex) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -383,9 +383,9 @@ int8_t DABDUINO::tuneDabProgram(unsigned int programIndex) {
 }
 
 /*
-   Set radio volume
-   volumeLevel = 0..16
-*/
+ *   Set radio volume
+ *   volumeLevel = 0..16
+ */
 int8_t DABDUINO::setVolume(byte volumeLevel) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
@@ -451,7 +451,7 @@ unsigned int DABDUINO::getTunedIndex() {
   } else {
     return 0;
   }
- }
+}
 
 /*
  * Get DAB station short name
