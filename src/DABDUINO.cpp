@@ -17,102 +17,6 @@ DABDUINO::DABDUINO(HardwareSerial& serial, int8_t RESET_PIN, int8_t DAC_MUTE_PIN
 
 }
 
-byte DABDUINO::charToAscii(byte byte1, byte byte0) {
-
-  if (byte1 == 0x00) {
-
-    if (byte0 == 0x0) {
-      return (byte0);
-    }
-
-    if (byte0 < 128) {
-      return (byte0);
-    }
-
-    switch (byte0)
-    {
-    case 0x8A: return (0x53); break;
-    case 0x8C: return (0x53); break;
-    case 0x8D: return (0x54); break;
-    case 0x8E: return (0x5a); break;
-    case 0x8F: return (0x5a); break;
-    case 0x9A: return (0x73); break;
-    case 0x9D: return (0x74); break;
-    case 0x9E: return (0x7a); break;
-    case 0xC0: return (0x41); break;
-    case 0xC1: return (0x41); break;
-    case 0xC2: return (0x41); break;
-    case 0xC3: return (0x41); break;
-    case 0xC4: return (0x41); break;
-    case 0xC5: return (0x41); break;
-    case 0xC7: return (0x43); break;
-    case 0xC8: return (0x45); break;
-    case 0xC9: return (0x45); break;
-    case 0xCA: return (0x45); break;
-    case 0xCB: return (0x45); break;
-    case 0xCC: return (0x49); break;
-    case 0xCD: return (0x49); break;
-    case 0xCE: return (0x49); break;
-    case 0xCF: return (0x49); break;
-    case 0xD0: return (0x44); break;
-    case 0xD1: return (0x4e); break;
-    case 0xD2: return (0x4f); break;
-    case 0xD3: return (0x4f); break;
-    case 0xD4: return (0x4f); break;
-    case 0xD5: return (0x4f); break;
-    case 0xD6: return (0x4f); break;
-    case 0xD8: return (0x4f); break;
-    case 0xD9: return (0x55); break;
-    case 0xDA: return (0x55); break;
-    case 0xDB: return (0x55); break;
-    case 0xDC: return (0x55); break;
-    case 0xDD: return (0x59); break;
-    case 0xE0: return (0x61); break;
-    case 0xE1: return (0x61); break;
-    case 0xE2: return (0x61); break;
-    case 0xE3: return (0x61); break;
-    case 0xE4: return (0x61); break;
-    case 0xE5: return (0x61); break;
-    case 0xE7: return (0x63); break;
-    case 0xE8: return (0x65); break;
-    case 0xE9: return (0x65); break;
-    case 0xEA: return (0x65); break;
-    case 0xEB: return (0x65); break;
-    case 0xEC: return (0x69); break;
-    case 0xED: return (0x69); break;
-    case 0xEE: return (0x69); break;
-    case 0xEF: return (0x69); break;
-    case 0xF1: return (0x6e); break;
-    case 0xF2: return (0x6f); break;
-    case 0xF3: return (0x6f); break;
-    case 0xF4: return (0x6f); break;
-    case 0xF5: return (0x6f); break;
-    case 0xF6: return (0x6f); break;
-    case 0xF9: return (0x75); break;
-    case 0xFA: return (0x75); break;
-    case 0xFB: return (0x75); break;
-    case 0xFC: return (0x75); break;
-    case 0xFD: return (0x79); break;
-    case 0xFF: return (0x79); break;
-    }
-  }
-
-  if (byte1 == 0x01) {
-    switch (byte0)
-    {
-    case 0x1B: return (0x65); break; // ě > e
-    case 0x48: return (0x6e); break; // ň > n
-    case 0x59: return (0x72); break; // ř > r
-    case 0x0D: return (0x63); break; // č > c
-    case 0x7E: return (0x7A); break; // ž > z
-    case 0x0C: return (0x43); break; // Č > C
-    }
-  }
-
-  return  (0x20);
-}
-
-
 void DABDUINO::initialization() {
 
   // DAC MUTE
@@ -213,10 +117,9 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
     _Serial->read();
   }
   while (byteIndex < 255) {
-    if (dabCommand[byteIndex] == 0xFD) break;
-    byteIndex++;
+    if (dabCommand[byteIndex++] == 0xFD) break;
   }
-  _Serial->write(dabCommand, byteIndex + 1);
+  _Serial->write(dabCommand, byteIndex);
   _Serial->flush();
   byteIndex = 0;
   unsigned long endMillis = millis() + 200; // timeout for answer from module = 200ms
@@ -551,6 +454,107 @@ int8_t DABDUINO::seekFmProgram(byte searchDirection) {
   } else {
     return 0;
   }
+}
+
+
+
+
+/*
+ * Convert two byte char from DAB to one byte char. Add next chars... 
+ */
+byte DABDUINO::charToAscii(byte byte1, byte byte0) {
+
+  if (byte1 == 0x00) {
+
+    if (byte0 == 0x0) {
+      return (byte0);
+    }
+
+    if (byte0 < 128) {
+      return (byte0);
+    }
+
+    switch (byte0)
+    {
+    case 0x8A: return (0x53); break;
+    case 0x8C: return (0x53); break;
+    case 0x8D: return (0x54); break;
+    case 0x8E: return (0x5a); break;
+    case 0x8F: return (0x5a); break;
+    case 0x9A: return (0x73); break;
+    case 0x9D: return (0x74); break;
+    case 0x9E: return (0x7a); break;
+    case 0xC0: return (0x41); break;
+    case 0xC1: return (0x41); break;
+    case 0xC2: return (0x41); break;
+    case 0xC3: return (0x41); break;
+    case 0xC4: return (0x41); break;
+    case 0xC5: return (0x41); break;
+    case 0xC7: return (0x43); break;
+    case 0xC8: return (0x45); break;
+    case 0xC9: return (0x45); break;
+    case 0xCA: return (0x45); break;
+    case 0xCB: return (0x45); break;
+    case 0xCC: return (0x49); break;
+    case 0xCD: return (0x49); break;
+    case 0xCE: return (0x49); break;
+    case 0xCF: return (0x49); break;
+    case 0xD0: return (0x44); break;
+    case 0xD1: return (0x4e); break;
+    case 0xD2: return (0x4f); break;
+    case 0xD3: return (0x4f); break;
+    case 0xD4: return (0x4f); break;
+    case 0xD5: return (0x4f); break;
+    case 0xD6: return (0x4f); break;
+    case 0xD8: return (0x4f); break;
+    case 0xD9: return (0x55); break;
+    case 0xDA: return (0x55); break;
+    case 0xDB: return (0x55); break;
+    case 0xDC: return (0x55); break;
+    case 0xDD: return (0x59); break;
+    case 0xE0: return (0x61); break;
+    case 0xE1: return (0x61); break;
+    case 0xE2: return (0x61); break;
+    case 0xE3: return (0x61); break;
+    case 0xE4: return (0x61); break;
+    case 0xE5: return (0x61); break;
+    case 0xE7: return (0x63); break;
+    case 0xE8: return (0x65); break;
+    case 0xE9: return (0x65); break;
+    case 0xEA: return (0x65); break;
+    case 0xEB: return (0x65); break;
+    case 0xEC: return (0x69); break;
+    case 0xED: return (0x69); break;
+    case 0xEE: return (0x69); break;
+    case 0xEF: return (0x69); break;
+    case 0xF1: return (0x6e); break;
+    case 0xF2: return (0x6f); break;
+    case 0xF3: return (0x6f); break;
+    case 0xF4: return (0x6f); break;
+    case 0xF5: return (0x6f); break;
+    case 0xF6: return (0x6f); break;
+    case 0xF9: return (0x75); break;
+    case 0xFA: return (0x75); break;
+    case 0xFB: return (0x75); break;
+    case 0xFC: return (0x75); break;
+    case 0xFD: return (0x79); break;
+    case 0xFF: return (0x79); break;
+    }
+  }
+
+  if (byte1 == 0x01) {
+    switch (byte0)
+    {
+    case 0x1B: return (0x65); break; // ě > e
+    case 0x48: return (0x6e); break; // ň > n
+    case 0x59: return (0x72); break; // ř > r
+    case 0x0D: return (0x63); break; // č > c
+    case 0x7E: return (0x7A); break; // ž > z
+    case 0x0C: return (0x43); break; // Č > C
+    }
+  }
+
+  return  (0x20);
 }
 
 
