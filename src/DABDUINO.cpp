@@ -64,8 +64,8 @@ int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
 
   byte dabReturn[6];
   byte isPacketCompleted = 0;
-  unsigned int byteIndex = 0;
-  unsigned int dataIndex = 0;
+  uint16_t byteIndex = 0;
+  uint16_t dataIndex = 0;
   byte serialData = 0;
   *eventDataSize = 128;
   unsigned long endMillis = millis() + 200; // timeout for answer from module = 200ms
@@ -85,7 +85,7 @@ int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
       if (byteIndex == 5) {
         *eventDataSize = (((long)dabReturn[4] << 8) + (long)dabReturn[5]);
       }
-      if ((byteIndex - *eventDataSize) > 5 && serialData == 0xFD) {
+      if ((int16_t)(byteIndex - *eventDataSize) > 5 && serialData == 0xFD) {
         isPacketCompleted = 1;
         break;
       }
@@ -95,7 +95,7 @@ int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
   while (_Serial->available() > 0) {
     _Serial->read();
   }
-  if (dabReturn[1] == 0x07 && isPacketCompleted == 1) {
+  if (isPacketCompleted == 1 && dabReturn[1] == 0x07) {
     return dabReturn[2] + 1;
   } else {
     return 0;
@@ -109,8 +109,8 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
 
   byte dabReturn[6];
   byte isPacketCompleted = 0;
-  unsigned int byteIndex = 0;
-  unsigned int dataIndex = 0;
+  uint16_t byteIndex = 0;
+  uint16_t dataIndex = 0;
   byte serialData = 0;
   *dabDataSize = 0;
   while (_Serial->available() > 0) {
@@ -139,7 +139,7 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
       if (byteIndex == 5) {
         *dabDataSize = (((long)dabReturn[4] << 8) + (long)dabReturn[5]);
       }
-      if ((byteIndex - *dabDataSize) >= 5 && serialData == 0xFD) {
+      if ((int16_t)(byteIndex - *dabDataSize) >= 5 && serialData == 0xFD) {
         isPacketCompleted = 1;
         break;
       }
@@ -147,9 +147,6 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], unsigned int *da
     }
   }
   if (isPacketCompleted == 1 && !(dabReturn[1] == 0x00 && dabReturn[2] == 0x02)) {
-    if (dataIndex) {
-      dabData[dataIndex - 1] = 0x00;
-    }
     return 1;
   } else {
     return 0;
