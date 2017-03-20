@@ -25,20 +25,21 @@ void setup() {
   Serial.begin(57600);
 
   Serial.println("DAB RESET & START");
-  dab.initialization();
-  if (!dab.resetDabModule()) {
+  dab.init();
+  if (!dab.reset()) {
     Serial.println("DAB NOT READY");
     while (1) {}
   }
   Serial.println("DAB READY");
 
   Serial.print("Search for DAB programs:");
-  dab.startSearchDabPrograms();
+  dab.searchDAB(1);
 
   int8_t status;
   int8_t lastStatus;
+
   while (true) {
-    status = dab.getPlayStatus();
+    dab.playStatus(status);
     if (status != lastStatus) {
       Serial.println();
       // 1=playing, 2=searching, 3=tuning, 4=stop, 5=sorting change, 6=reconfiguration
@@ -70,7 +71,7 @@ void setup() {
   }
   Serial.println("");
 
-  programsIndex = dab.getDabProgramsIndex();
+  dab.getProgramIndex(programsIndex);
   Serial.println("Available programs: ");
   for (unsigned int i = 1; i <= programsIndex; i++) {
     if (dab.getProgramLongName(i, dabText)) {
@@ -81,7 +82,7 @@ void setup() {
   }
   Serial.println();
 
-  if (dab.setAudioOutputType(true, true)) { // 1st = spdiv, 2st = i2s/dac
+  if (dab.setAudioOutput(true, true)) { // 1st = spdiv, 2st = i2s/dac
     Serial.println("Set audio output");
   }
 
@@ -95,7 +96,7 @@ void setup() {
 
   programIndex = 1;
 
-  if (dab.tuneDabProgram(programIndex)) {
+  if (dab.playDAB(programIndex)) {
     if (dab.getProgramLongName(programIndex, dabText)) {
       Serial.print("Tuned program: (");
       Serial.print(programIndex);
@@ -119,7 +120,7 @@ void loop() {
       break;
     case 2:
       //do something when New DAB progam text
-      int8_t res = dab.getProgrameText(dabText);
+      int8_t res = dab.getProgramText(dabText);
       if (res == 1) { // new text
         Serial.print("DAB text event: ");
         Serial.println(dabText);
