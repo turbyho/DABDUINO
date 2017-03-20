@@ -9,7 +9,7 @@ For command reference visit [DABDUINO.cpp](https://github.com/turbyho/DABDUINO/b
 Example is here [DABDUINO_example_1.ino](https://github.com/turbyho/DABDUINO/blob/master/examples/Dabduino_example_1/DABDUINO_example_1.ino).
 
 ## Where buy the DABDUINO?
-I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch on 05/2017. Send me preorders please.
+I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch on 05/2017. Send me preorders by email please.
 
 ## Final DABDUINO
 <img src="doc/dabduino_01.jpg">
