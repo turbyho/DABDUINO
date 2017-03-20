@@ -6,16 +6,14 @@ Open library manager in Arduino IDE and install the DABDUINO library.
 
 ## References
 For command reference visit [DABDUINO.cpp](https://github.com/turbyho/DABDUINO/blob/master/src/DABDUINO.cpp). 
+Example is here [DABDUINO_example_1.ino](https://github.com/turbyho/DABDUINO/blob/master/examples/Dabduino_example_1/DABDUINO_example_1.ino).
 
 ## Where buy the DABDUINO?
 I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch on 05/2017. Send me preorders please.
 
 ## Final DABDUINO
-
-<img src="doc/IMG_6741.jpg">
-
-<img src="doc/IMG_6728.jpg">
-
+<img src="doc/dabduino_01.jpg">
+<img src="doc/dabduino_02.jpg">
 
 ### Second prototype video
 [<img src="https://img.youtube.com/vi/LBgsKTtB7Bs/0.jpg">](https://www.youtube.com/watch?v=LBgsKTtB7Bs)

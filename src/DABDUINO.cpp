@@ -465,7 +465,7 @@ int8_t DABDUINO::playStatus(unsigned int data) {
   byte dabCommand[7] = { 0xFE, 0x01, 0x05, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     if (dabDataSize) {
-      data = dabData[0] + 1;
+      data = dabData[0];
       return 1;
     } else {
       return 0;
@@ -477,7 +477,7 @@ int8_t DABDUINO::playStatus(unsigned int data) {
 
 /*
  *   Radio module play mode
- *   return data: 1=DAB, 2=FM, 4=BEEP, 255=Stream stop
+ *   return data: 0=DAB, 1=FM, 2=BEEP, 255=Stream stop
  */
 int8_t DABDUINO::playMode(unsigned int data) {
 
@@ -487,7 +487,7 @@ int8_t DABDUINO::playMode(unsigned int data) {
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     if (dabDataSize) {
       if (dabData[0] != 0xFF) {
-        data = dabData[0] + 1;
+        data = dabData[0];
         return 1;
       } else {
         data = dabData[0];
@@ -564,7 +564,7 @@ int8_t DABDUINO::setStereoMode(boolean stereo = true) {
 
 /*
  *   Get stereo mode
- *   1=force mono, 2=auto detect stereo
+ *   0=force mono, 1=auto detect stereo
  */
 int8_t DABDUINO::getStereoMode(unsigned int data) {
 
@@ -573,7 +573,7 @@ int8_t DABDUINO::getStereoMode(unsigned int data) {
   byte dabCommand[7] = { 0xFE, 0x01, 0x0A, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     if (dabDataSize) {
-      data = dabData[0] + 1;
+      data = dabData[0];
       return 1;
     } else {
       return 0;
@@ -585,7 +585,7 @@ int8_t DABDUINO::getStereoMode(unsigned int data) {
 
 /*
  *   Get stereo type
- *   return data: 1=stereo, 2=join stereo, 3=dual channel, 4=single channel (mono)
+ *   return data: 0=stereo, 1=join stereo, 2=dual channel, 3=single channel (mono)
  */
 int8_t DABDUINO::getStereoType(unsigned int data) {
 

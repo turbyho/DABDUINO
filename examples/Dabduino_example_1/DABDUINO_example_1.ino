@@ -42,24 +42,24 @@ void setup() {
     dab.playStatus(status);
     if (status != lastStatus) {
       Serial.println();
-      // 1=playing, 2=searching, 3=tuning, 4=stop, 5=sorting change, 6=reconfiguration
+      // 0=playing, 1=searching, 2=tuning, 3=stop, 4=sorting change, 5=reconfiguration
       switch (status) {
-      case 1:
+      case 0:
         Serial.print("Playing");
         break;
-      case 2:
+      case 1:
         Serial.print("Searching");
         break;
-      case 3:
+      case 2:
         Serial.print("Tuning");
         break;
-      case 4:
+      case 3:
         Serial.print("Stop");
         break;
-      case 5:
+      case 4:
         Serial.print("Sorting");
         break;
-      case 6:
+      case 5:
         Serial.print("Reconfiguration");
         break;
       }
