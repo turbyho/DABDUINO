@@ -5,7 +5,7 @@ The DABDUINO is Arduino DAB/DAB+ (digital radio) + FM shield based on Keystone T
 Open library manager in Arduino IDE and install the DABDUINO library.
 
 ## References
-For command reference visit [DABDUINO.cpp](https://github.com/turbyho/DABDUINO/blob/master/src/DABDUINO.cpp)
+For command reference visit [DABDUINO.cpp](https://github.com/turbyho/DABDUINO/blob/master/src/DABDUINO.cpp). 
 
 ## Where buy the DABDUINO?
 I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch on 05/2017. Send me preorders please.
