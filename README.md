@@ -12,9 +12,9 @@ I waiting for first batch of DABDUINO boards. First boards will be ready for dis
 
 ## Final DABDUINO
 
-[<img src="doc/IMG_6741.jpg">]
+<img src="doc/IMG_6741.jpg">
 
-[<img src="doc/IMG_6731.jpg">]
+<img src="doc/IMG_6731.jpg">
 
 
 ### Second prototype video
