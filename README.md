@@ -30,7 +30,7 @@ Example is here [DABDUINO_example_1.ino](https://github.com/turbyho/DABDUINO/blo
 Send me [mail](mailto:turbyho@gmail.com) :)
 
 ## Where buy the DABDUINO?
-I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch on 05/2017. Send me preorders by email please.
+I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch in 05/2017. Send me preorders by email please.
 
 ## Final DABDUINO
 <img src="doc/dabduino_01.jpg">
