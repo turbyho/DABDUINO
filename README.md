@@ -27,10 +27,10 @@ For command reference visit [DABDUINO.cpp](https://github.com/turbyho/DABDUINO/b
 Example is here [DABDUINO_example_1.ino](https://github.com/turbyho/DABDUINO/blob/master/examples/Dabduino_example_1/DABDUINO_example_1.ino).
 
 ## Have some problem or questions?
-Send me [mail](mailto:turbyho@gmail.com) :)
+Send me [email](mailto:turbyho@gmail.com) :)
 
 ## Where buy the DABDUINO?
-I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch in 05/2017. Send me preorders by email please.
+I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch in 05/2017. Send me preorders by [email](mailto:turbyho@gmail.com) please.
 
 ## Final DABDUINO
 <img src="doc/dabduino_01.jpg">
