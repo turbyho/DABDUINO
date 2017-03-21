@@ -9,8 +9,11 @@ The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiv
 * DAB/DAB+: BAND 3, CHINA BAND, L-BAND
 * FM: 87.500 - 108.000MHz
 
+**Input**
+* RF (antenna): SMA connector, solder pads
+
 **Output:**
-* Analog audio: 32-bit, 384kHz PCM DAC - stereo cinch (golden)
+* Analog audio: 32-bit, 384kHz PCM DAC - stereo cinch (golden), solder pads
 * Digital audio: SPDIF (optical)
 
 ## How to install
