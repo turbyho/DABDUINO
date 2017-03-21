@@ -16,6 +16,9 @@ The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiv
 * Analog audio: 32-bit, 384kHz PCM DAC - stereo cinch (golden), solder pads
 * Digital audio: SPDIF (optical)
 
+**Power:**
+* DABDUINO is powered only from Arduino pin heads. No need external power source. 
+
 ## How to install
 Open library manager in Arduino IDE and install the DABDUINO library.
 
