@@ -9,15 +9,15 @@ The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiv
 * DAB/DAB+: BAND 3, CHINA BAND, L-BAND
 * FM: 87.5 - 108MHz
 
-**Input**
+**Input:**
 * RF (antenna): SMA connector, solder pads
 
 **Output:**
 * Analog audio: 32-bit, 384kHz PCM DAC - stereo cinch (golden), solder pads
 * Digital audio: SPDIF (optical)
 
-**RTC**
-* RTC on board, synchronised from DAB/DAB+ stream 
+**Real Time Clock (RTC):**
+* on board, synchronised from DAB/DAB+ stream 
 
 **Power:**
 * DABDUINO is powered only from Arduino pin heads. No need external power source. 
