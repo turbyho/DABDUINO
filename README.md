@@ -1,7 +1,7 @@
 ## What is the DABDUINO?
 The DABDUINO is Arduino DAB/DAB+ (digital radio) + FM shield based on Keystone T3B module and with 32-bit, 384kHz PCM DAC (cinch) + SPDIF optical digital audio output. The DABDUINO shield is compatible with 3.3V boards (Zero, M0, M0 PRO, Due etc.). DABDUINO Library is designed specifically to work with the DABDUINO and works too with Keystone T3B module.
 
-The library support many function for control DABDUINO and for access to broadcast data. For example - automatic station search and store stations in database, watching and reading DAB/DAB+ and RDS station name, program type, broadcast information texts and data, signal strength and quality, volume and stereo mode settings and many others. In near future I will add function for access to media data from DAB/DAB+ stream. For example - images, audio stream, etc. 
+The library support many function for control DABDUINO and for access to broadcast data. For example - automatic station search and store stations in database, watching and reading DAB/DAB+ and FM station name, program type, broadcast information texts and data for DAB/DAB+/RDS, signal strength and quality, volume and stereo mode settings and many others. In near future I will add function for access to media data from DAB/DAB+ stream. For example - images, audio stream, etc. 
 
 The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiver project. Optical audio outout (SPDIF) and 32-bit, 384kHz PCM DAC offer the same audio quality as expensive DAB/DAB+ receivers.
 
