@@ -5,7 +5,7 @@ The library support many function for control DABDUINO and for access to broadca
 
 The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiver project. Optical audio outout (SPDIF) and 32-bit, 384kHz PCM DAC offer the same audio quality as expensive DAB/DAB+ receivers.
 
-> **Bands:**
+**Bands:**
 * DAB/DAB+: BAND 3, CHINA BAND, L-BAND
 * FM: 87.500 - 108.000MHz
 
