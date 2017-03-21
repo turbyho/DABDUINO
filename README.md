@@ -7,7 +7,7 @@ The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiv
 
 **Bands:**
 * DAB/DAB+: BAND 3, CHINA BAND, L-BAND
-* FM: 87.500 - 108.000MHz
+* FM: 87.5 - 108MHz
 
 **Input**
 * RF (antenna): SMA connector, solder pads
