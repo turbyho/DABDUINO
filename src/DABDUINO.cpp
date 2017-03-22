@@ -411,11 +411,10 @@ int8_t DABDUINO::searchDAB(unsigned int band = 1) {
   unsigned int dabDataSize;
 
   byte chStart = 0;
-  byte chEnd = 0;
+  byte chEnd = 40;
 
   switch (band) {
   case 1:
-  default:
     chStart = 0;
     chEnd = 40;
     break;
