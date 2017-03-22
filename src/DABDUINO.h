@@ -114,7 +114,7 @@ public:
   // *************************
 
   int8_t enableEventNotification();
-  int8_t disableNotification();
+  int8_t disableEventNotification();
 
 
 

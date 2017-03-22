@@ -1526,7 +1526,7 @@ int8_t DABDUINO::enableEventNotification() {
 /*
  *   Disable event notification
  */
-int8_t DABDUINO::disableNotification() {
+int8_t DABDUINO::disableEventNotification() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
