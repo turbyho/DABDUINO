@@ -89,7 +89,7 @@ void setup() {
     Serial.println("Set volume");
   }
 
-  if (dab.enableEventNotification()) {
+  if (dab.eventNotificationEnable()) {
     Serial.println("Event notification enabled");
   }
 

@@ -1511,7 +1511,7 @@ int8_t DABDUINO::getRTCclockStatus(unsigned int *data) {
 /*
  *   Enable event notification
  */
-int8_t DABDUINO::enableEventNotification() {
+int8_t DABDUINO::eventNotificationEnable() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
@@ -1526,7 +1526,7 @@ int8_t DABDUINO::enableEventNotification() {
 /*
  *   Disable event notification
  */
-int8_t DABDUINO::disableEventNotification() {
+int8_t DABDUINO::eventNotificationDisable() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
