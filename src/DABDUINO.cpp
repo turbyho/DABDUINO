@@ -157,14 +157,14 @@ int8_t DABDUINO::isEvent() {
  *   Read event
  *   RETURN EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
  */
-int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
-
+int8_t DABDUINO::readEvent() {
+  byte eventData[16];
   byte dabReturn[6];
   byte isPacketCompleted = 0;
   uint16_t byteIndex = 0;
   uint16_t dataIndex = 0;
   byte serialData = 0;
-  *eventDataSize = 128;
+  uint8_t eventDataSize = 128;
   unsigned long endMillis = millis() + 200; // timeout for answer from module = 200ms
   while (millis() < endMillis && dataIndex < DAB_MAX_DATA_LENGTH) {
     if (_Serial->available() > 0) {
@@ -173,16 +173,16 @@ int8_t DABDUINO::readEvent(byte eventData[], unsigned int *eventDataSize) {
         byteIndex = 0;
         dataIndex = 0;
       }
-      if (*eventDataSize && dataIndex < *eventDataSize) {
+      if (eventDataSize && dataIndex < eventDataSize) {
         eventData[dataIndex++] = serialData;
       }
       if (byteIndex <= 5) {
         dabReturn[byteIndex] = serialData;
       }
       if (byteIndex == 5) {
-        *eventDataSize = (((long)dabReturn[4] << 8) + (long)dabReturn[5]);
+        eventDataSize = (((long)dabReturn[4] << 8) + (long)dabReturn[5]);
       }
-      if ((int16_t)(byteIndex - *eventDataSize) >= 5 && serialData == 0xFD) {
+      if ((int16_t)(byteIndex - eventDataSize) >= 5 && serialData == 0xFD) {
         isPacketCompleted = 1;
         break;
       }

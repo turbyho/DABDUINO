@@ -26,7 +26,7 @@ public:
   void init();
 
   int8_t isEvent();
-  int8_t readEvent(byte eventData[], unsigned int *eventDataSize);
+  int8_t readEvent();
   int8_t sendCommand(byte dabCommand[], byte dabData[], unsigned int *dabDataSize);
 
   // *************************

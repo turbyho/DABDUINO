@@ -110,23 +110,24 @@ void loop() {
   // EVENTS
   // EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
   if (dab.isEvent()) {
-    byte eventData[16];
-    unsigned int dataSize;
-    int8_t eventTyp = dab.readEvent(eventData, &dataSize);
-    switch (eventTyp) {
-    case 1:
-      Serial.println("DAB program search finished.");
-      break;
-    case 2:
-      //do something when New DAB progam text
-      int8_t res = dab.getProgramText(dabText);
-      if (res == 1) { // new text
-        Serial.print("DAB text event: ");
-        Serial.println(dabText);
-      } else if (res == 2) { // same text
-        Serial.println("DAB text event: text is same...");
+
+    int8_t eventTyp = dab.readEvent();
+    if (eventTyp) {
+      switch (eventTyp) {
+      case 1:
+        Serial.println("DAB program search finished.");
+        break;
+      case 2:
+        //do something when New DAB progam text
+        int8_t res = dab.getProgramText(dabText);
+        if (res == 1) { // new text
+          Serial.print("DAB text event: ");
+          Serial.println(dabText);
+        } else if (res == 2) { // same text
+          Serial.println("DAB text event: text is same...");
+        }
+        break;
       }
-      break;
     }
   }
 }
