@@ -1429,7 +1429,7 @@ int8_t DABDUINO::getRTCclock(unsigned int *year, unsigned int *month, unsigned i
 /*
  *  Set RTC sync clock from stream enable
  */
-int8_t DABDUINO::setRTCsyncEnable() {
+int8_t DABDUINO::RTCsyncEnable() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
@@ -1444,7 +1444,7 @@ int8_t DABDUINO::setRTCsyncEnable() {
 /*
  *  Set RTC sync clock from stream disable
  */
-int8_t DABDUINO::setRTCsyncDisable() {
+int8_t DABDUINO::RTCsyncDisable() {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;
