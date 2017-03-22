@@ -1461,7 +1461,7 @@ int8_t DABDUINO::setRTCsyncDisable() {
  *  Get RTC sync clock status
  *  return data: 0=disable, 1=enable 
  */
-int8_t DABDUINO::getRTCsysncStatus(unsigned int *data) {
+int8_t DABDUINO::getRTCsyncStatus(unsigned int *data) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   unsigned int dabDataSize;

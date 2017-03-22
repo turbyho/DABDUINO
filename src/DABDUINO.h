@@ -100,7 +100,7 @@ public:
   int8_t getRTCclock(unsigned int *year, unsigned int *month, unsigned int *week, unsigned int *day, unsigned int *hour, unsigned int *minute, unsigned int *second);
   int8_t setRTCsyncEnable();
   int8_t setRTCsyncDisable();
-  int8_t getRTCsysncStatus(unsigned int *data);
+  int8_t getRTCsyncStatus(unsigned int *data);
   int8_t getRTCclockStatus(unsigned int *data);
 
   // ********************************************
