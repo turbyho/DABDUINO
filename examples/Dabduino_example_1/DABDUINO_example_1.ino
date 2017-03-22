@@ -35,11 +35,11 @@ void setup() {
   Serial.print("Search for DAB programs:");
   dab.searchDAB(1);
 
-  int8_t status;
-  int8_t lastStatus;
+  unsigned int status;
+  unsigned int lastStatus;
 
   while (true) {
-    dab.playStatus(status);
+    dab.playStatus(&status);
     if (status != lastStatus) {
       Serial.println();
       switch (status) {
@@ -70,7 +70,7 @@ void setup() {
   }
   Serial.println("");
 
-  dab.getProgramIndex(programsIndex);
+  dab.getProgramIndex(&programsIndex);
   Serial.println("Available programs: ");
   for (unsigned int i = 1; i <= programsIndex; i++) {
     if (dab.getProgramLongName(i, dabText)) {
