@@ -81,7 +81,7 @@ void setup() {
   }
   Serial.println();
 
-  if (dab.setAudioOutput(true, true)) { // 1st = spdiv, 2st = i2s/dac
+  if (dab.setAudioOutput(true, true)) { // 1st = spdiv (optical), 2st = cinch (analog)
     Serial.println("Set audio output");
   }
 
@@ -124,7 +124,7 @@ void loop() {
         Serial.print("DAB text event: ");
         Serial.println(dabText);
       } else if (res == 2) { // same text
-        Serial.println("DAB text event: the new text is the same...");
+        Serial.println("DAB text event: text is same...");
       }
       break;
     }
