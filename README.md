@@ -8,12 +8,12 @@ The library support many function for control DABDUINO and for access to broadca
 
 
 **Compatibility:**
-* Arduino (as shield): DUE, ZERO, M0, M0 PRO, TITAN, STAR - OTTO, PRIMO _(generally all 3.3V boards)_
-* Arduino (wired): MKRZero, MRK1000 _(generally all 3.3V boards)_
+* Arduino (as shield): DUE, ZERO, M0, M0 PRO, TITAN, STAR - OTTO, PRIMO 
+* Arduino (wired): MKRZero, MRK1000 
+> _generally all Arduino 3.3V boards_
 * STM32 (as shield): Nucleo L476RG, Nucleo F091RC, Nucleo F103RB _(generally all supported Nucleo boards in Arduino_STM32)_
-* STM32 (wired): STM32F103C8T6 _(generally all supported boards in Arduino_STM32)_
-
-> _For STM32 boards use [Arduino_STM32](https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki)_
+* STM32 (wired): STM32F103C8T6 
+> _generally all supported boards in [Arduino_STM32](https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki)_
 
 **Bands:**
 * DAB/DAB+: BAND 3, CHINA BAND, L-BAND
