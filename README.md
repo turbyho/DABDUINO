@@ -13,6 +13,8 @@ The library support many function for control DABDUINO and for access to broadca
 * STM32 (as shield): Nucleo L476RG, Nucleo F091RC, Nucleo F103RB
 * STM32 (wired): STM32F103C8T6
 
+_For STM32 boards use ![Arduino_STM32](https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki)_
+
 **Bands:**
 * DAB/DAB+: BAND 3, CHINA BAND, L-BAND
 * FM: 87.5 - 108MHz
