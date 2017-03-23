@@ -24,7 +24,7 @@ The library support many function for control DABDUINO and for access to broadca
 
 **Output:**
 * Analog audio: 32-bit, 384kHz PCM DAC - stereo cinch (golden), solder pads
-* Digital audio: SPDIF (optical)
+* Digital audio: SPDIF / Toslink (optical)
 
 **Real Time Clock (RTC):**
 * on board, synchronised from DAB/DAB+ stream 
