@@ -11,7 +11,7 @@ The library support many function for control DABDUINO and for access to broadca
 * Arduino (as shield): DUE, ZERO, M0, M0 PRO, TITAN, STAR - OTTO, PRIMO 
 * Arduino (wired): MKRZero, MRK1000 
 > _generally all Arduino 3.3V boards_
-* STM32 (as shield): Nucleo L476RG, Nucleo F091RC, Nucleo F103RB _(generally all supported Nucleo boards in Arduino_STM32)_
+* STM32 (as shield): Nucleo L476RG, Nucleo F091RC, Nucleo F103RB
 * STM32 (wired): STM32F103C8T6 
 > _generally all supported boards in [Arduino_STM32](https://github.com/rogerclarkmelbourne/Arduino_STM32/wiki)_
 
