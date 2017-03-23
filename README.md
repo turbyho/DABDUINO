@@ -56,4 +56,4 @@ I waiting for first batch of DABDUINO boards. First boards will be ready for dis
 [<img src="https://img.youtube.com/vi/Ivv96sOVvz4/0.jpg">](https://www.youtube.com/watch?v=Ivv96sOVvz4)
 
 ### Pinout
-![DABDUINO PINOUT](doc/dabduino_pinout.png)
+![DABDUINO PINOUT](doc/dabduino_pinout_v1.0.png)
