@@ -1,10 +1,10 @@
 ## What is the DABDUINO?
 
-The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiver project, car receiver or anything you want. Optical audio outout (SPDIF/Toslink) and 32-bit, 384kHz PCM DAC offer the same audio quality as expensive DAB/DAB+ receivers.
+The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiver project, car receiver or anything you want. Optical audio outout (SPDIF/Toslink) and 32-bit, 384kHz PCM DAC offers the same audio quality as expensive DAB/DAB+ receivers.
 
-The DABDUINO is Arduino DAB/DAB+ (digital radio) + FM shield based on Keystone T3B module and with 32-bit, 384kHz PCM DAC (cinch) + SPDIF/Toslink optical digital audio output. DABDUINO Library is designed specifically to work with the DABDUINO and works too with Keystone T3B module.
+The DABDUINO is Arduino DAB/DAB+ (digital radio) + FM shield based on Keystone T3B module and with 32-bit, 384kHz PCM DAC (cinch) + SPDIF/Toslink optical digital audio output. DABDUINO Library is designed specifically to work with the DABDUINO and work with Keystone T3B module as well.
 
-The library support many function for control DABDUINO and for access to broadcast data. For example - automatic station search and store stations in database, watching and reading DAB/DAB+ and FM station name, program type, information texts and data from DAB/DAB+/FM RDS, signal strength and quality, volume and stereo mode settings and many others. In near future I will add function for access to media data from DAB/DAB+ stream. For example - images, audio stream, etc. 
+The library supports many functions for control DABDUINO and for access to broadcast data. For example - automatic station search and store stations in database, watching and reading DAB/DAB+ and FM station name, program type, information texts and data from DAB/DAB+/FM RDS, signal strength and quality, volume and stereo mode settings and many others. In near future I will add functions for access to media data from DAB/DAB+ stream. For example - images, audio stream, etc. 
 
 
 **Compatibility:**
@@ -37,13 +37,13 @@ Open library manager in Arduino IDE and install the DABDUINO library.
 
 ## References
 For command reference visit [DABDUINO.cpp](https://github.com/turbyho/DABDUINO/blob/master/src/DABDUINO.cpp). 
-Example is here [DABDUINO_example_1.ino](https://github.com/turbyho/DABDUINO/blob/master/examples/Dabduino_example_1/DABDUINO_example_1.ino).
+Example is available here [DABDUINO_example_1.ino](https://github.com/turbyho/DABDUINO/blob/master/examples/Dabduino_example_1/DABDUINO_example_1.ino).
 
 ## Have some problem or questions?
 Send me [email](mailto:turbyho@gmail.com) :)
 
 ## Where to buy the DABDUINO?
-I waiting for first batch of DABDUINO boards. First boards will be ready for dispatch in 05/2017. Price is 69 EUR. Postage for Europe 6 EUR, for outside Europe 10 EUR. Send me preorder by [email](mailto:turbyho@gmail.com) please.
+I wait for first batch of DABDUINO boards. First boards will be ready for dispatch in 05/2017. Price is 69 EUR. Postage for Europe 6 EUR, for for rest ot the world 10 EUR. Send me preorder by [email](mailto:turbyho@gmail.com) please.
 
 ## Final DABDUINO
 <img src="doc/dabduino_01.jpg">
