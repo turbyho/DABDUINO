@@ -8,7 +8,7 @@ The library supports many functions for control DABDUINO and for access to broad
 
 
 **Compatibility:**
-* Arduino (as shield): DUE, ZERO, M0, M0 PRO, TITAN, STAR - OTTO, PRIMO 
+* Arduino (as shield): DUE, ZERO, M0, M0 PRO, TIAN, STAR - OTTO, PRIMO 
 * Arduino (wired): MKRZero, MRK1000 
 > _generally all Arduino 3.3V boards_
 * STM32 (as shield): Nucleo L476RG, Nucleo F091RC, Nucleo F103RB
