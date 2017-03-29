@@ -42,9 +42,6 @@ Example is available here [DABDUINO_example_1.ino](https://github.com/turbyho/DA
 ## Have some problem or questions?
 Send me [email](mailto:turbyho@gmail.com) :)
 
-## Where to buy the DABDUINO?
-I wait for first batch of DABDUINO boards. First boards will be ready for dispatch in 05/2017. Price is 69 EUR. Postage for Europe 6 EUR, for rest of the world 10 EUR. Send me preorder by [email](mailto:turbyho@gmail.com) please.
-
 ## Final DABDUINO
 <img src="doc/dabduino_01.jpg">
 <img src="doc/dabduino_02.jpg">
