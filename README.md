@@ -16,7 +16,7 @@ The library supports many functions for control DABDUINO and for access to broad
 > _generally all supported boards in [Arduino_STM32](https://github.com/rogerclarkmelbourne/Arduino_STM32)_
 
 **Bands:**
-* DAB/DAB+: BAND 3, CHINA BAND, L-BAND
+* DAB/DAB+: BAND III, CHINA BAND, L-BAND
 * FM: 87.5 - 108MHz
 
 **Input:**
