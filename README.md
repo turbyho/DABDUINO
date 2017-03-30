@@ -13,7 +13,7 @@ The library supports many functions for control DABDUINO and for access to broad
 
 > _Generally all Arduino 3.3V boards_
 
-> _Arduino 5V boards only with level shifting (5V/3.3V)_
+> _Arduino 5V boards - only with level shifting (5V/3.3V)_
 
 > _SPI is not needed for common operation (only for access to media data)_
 
