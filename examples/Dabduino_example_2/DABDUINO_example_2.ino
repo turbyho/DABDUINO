@@ -1,6 +1,7 @@
 /*
   DABDUINO basic example 2s
   DABDUINO is DAB+ digital radio shield for Arduino
+  Created by Tomas Urbanek, Januar 2, 2017.
   www.dabduino.com
 */
 
