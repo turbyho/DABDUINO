@@ -11,9 +11,7 @@ The library supports many functions for control DABDUINO and for access to broad
 * Arduino (as shield): DUE, ZERO, M0, M0 PRO, TIAN, PRIMO 
 * Arduino (wired): MKRZero, MRK1000 
 
-> _Generally all Arduino 3.3V boards_
-
-> _Arduino 5V boards - only with level shifting (5V/3.3V)_
+> _Generally all Arduino 3.3V boards (Arduino 5V boards only with level shifting)_
 
 > _SPI is not needed for common operation (only for access to media data)_
 
