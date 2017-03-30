@@ -63,8 +63,8 @@ void setup() {
         break;
       }
     }
-    lastStatus = status;
     if (status == 0 || status == 3) break;
+    lastStatus = status;
     Serial.print(".");
     delay(1000);
   }
