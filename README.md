@@ -13,12 +13,12 @@ The library supports many functions for control DABDUINO and for access to broad
 
 > _Generally all Arduino 3.3V boards (Arduino 5V boards only with level shifting)_
 
-> _SPI is not needed for common operation (only for access to media data)_
-
 * STM32 (as shield): Nucleo L476RG, Nucleo F091RC, Nucleo F103RB
 * STM32 (wired): STM32F103C8T6 
 
 > _Generally all supported boards in [Arduino_STM32](https://github.com/rogerclarkmelbourne/Arduino_STM32)_
+
+> _SPI is not needed for common operation (only for access to media data)_
 
 **Bands:**
 * DAB/DAB+: BAND III, CHINA BAND, L-BAND
