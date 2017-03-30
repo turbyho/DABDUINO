@@ -12,9 +12,7 @@ The library supports many functions for control DABDUINO and for access to broad
 * Arduino (wired): MKRZero, MRK1000 
 
 > _Generally all Arduino 3.3V boards_
-
 > _Arduino 5V boards only with level shifting (5V/3.3V)_
-
 > _SPI is not needed for common operation (only for access to media data)_
 
 * STM32 (as shield): Nucleo L476RG, Nucleo F091RC, Nucleo F103RB
