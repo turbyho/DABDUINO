@@ -2,7 +2,7 @@
   DABDUINO basic example 1
   DABDUINO is DAB+ digital radio shield for Arduino
   www.dabduino.com
-*/
+  */
 
 #include "DABDUINO.h"
 
@@ -111,23 +111,17 @@ void loop() {
   // EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
   if (dab.isEvent()) {
 
-    int8_t eventTyp = dab.readEvent();
-    if (eventTyp) {
-      switch (eventTyp) {
-      case 1:
-        Serial.println("DAB program search finished.");
-        break;
-      case 2:
-        //do something when New DAB progam text
-        int8_t res = dab.getProgramText(dabText);
-        if (res == 1) { // new text
-          Serial.print("DAB text event: ");
-          Serial.println(dabText);
-        } else if (res == 2) { // same text
-          Serial.println("DAB text event: text is same...");
-        }
-        break;
+    switch (dab.readEvent()) {
+    case 1:
+      Serial.println("DAB program search finished.");
+      break;
+    case 2:
+      //do something when New DAB progam text
+      if (dab.getProgramText(dabText)) { // new text
+        Serial.print("DAB text event: ");
+        Serial.println(dabText);
       }
+      break;
     }
   }
 }
