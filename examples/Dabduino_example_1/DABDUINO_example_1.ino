@@ -72,7 +72,7 @@ void setup() {
 
   dab.getProgramIndex(&programsIndex);
   Serial.println("Available programs: ");
-  for (unsigned int i = 1; i <= programsIndex; i++) {
+  for (unsigned int i = 0; i <= programsIndex; i++) {
     if (dab.getProgramLongName(i, dabText)) {
       Serial.print(i);
       Serial.print("\t ");
@@ -89,7 +89,7 @@ void setup() {
     Serial.println("Set volume");
   }
 
-  programIndex = 1;
+  programIndex = 0;
 
   if (dab.playDAB(programIndex)) {
     if (dab.getProgramLongName(programIndex, dabText)) {
