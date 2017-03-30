@@ -89,10 +89,6 @@ void setup() {
     Serial.println("Set volume");
   }
 
-  if (dab.eventNotificationEnable()) {
-    Serial.println("Event notification enabled");
-  }
-
   programIndex = 1;
 
   if (dab.playDAB(programIndex)) {
@@ -102,6 +98,10 @@ void setup() {
       Serial.print(") ");
       Serial.println(dabText);
     }
+  }
+
+  if (dab.eventNotificationEnable()) {
+    Serial.println("Event notification enabled");
   }
 }
 
