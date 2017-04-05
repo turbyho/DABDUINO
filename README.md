@@ -44,6 +44,9 @@ Open library manager in Arduino IDE and install the DABDUINO library.
 For command reference visit [DABDUINO.cpp](https://github.com/turbyho/DABDUINO/blob/master/src/DABDUINO.cpp). 
 Example is available here [DABDUINO_example_1.ino](https://github.com/turbyho/DABDUINO/blob/master/examples/Dabduino_example_1/DABDUINO_example_1.ino).
 
+## Where to buy the DABDUINO?
+I wait for first batch of DABDUINO boards. First boards will be ready for dispatch in 05/2017. Price is 69 EUR. Postage for Europe 6 EUR, for rest of the world 10 EUR. Send me preorder by [email](mailto:turbyho@gmail.com) please.
+
 ## Have some problem or questions?
 Send me [email](mailto:turbyho@gmail.com) :)
 
