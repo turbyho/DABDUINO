@@ -7,13 +7,11 @@
 
 #include "DABDUINO.h"
 
-DABDUINO::DABDUINO(HardwareSerial& serial, int8_t RESET_PIN, int8_t DAC_MUTE_PIN, int8_t DAC_FLT_PIN, int8_t DAC_DEMP_PIN, int8_t SPI_CS_PIN) : _s(serial) {
+DABDUINO::DABDUINO(HardwareSerial& serial, int8_t RESET_PIN, int8_t DAC_MUTE_PIN, int8_t SPI_CS_PIN) : _s(serial) {
 
   _Serial = &serial;
   resetPin = RESET_PIN;
   dacMutePin = DAC_MUTE_PIN;
-  dacFltPin = DAC_FLT_PIN;
-  dacDempPin = DAC_DEMP_PIN;
   spiCsPin = SPI_CS_PIN;
 
 }
@@ -121,14 +119,6 @@ void DABDUINO::init() {
   // DAC MUTE
   pinMode(dacMutePin, OUTPUT);
   digitalWrite(dacMutePin, HIGH);
-
-  // DAC FLT
-  pinMode(dacFltPin, OUTPUT);
-  digitalWrite(dacFltPin, HIGH);
-
-  // DAC DEMP
-  pinMode(dacDempPin, OUTPUT);
-  digitalWrite(dacDempPin, LOW);
 
   // SPI CS
   pinMode(spiCsPin, OUTPUT);

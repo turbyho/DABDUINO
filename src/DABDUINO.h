@@ -19,7 +19,7 @@ class DABDUINO
 {
 public:
 
-  DABDUINO (HardwareSerial& serial, int8_t RESET_PIN, int8_t DAC_MUTE_PIN, int8_t DAC_FLT_PIN, int8_t DAC_DEMP_PIN, int8_t SPI_CS_PIN);
+  DABDUINO (HardwareSerial& serial, int8_t RESET_PIN, int8_t DAC_MUTE_PIN, int8_t SPI_CS_PIN);
   Stream& _s;
 
   unsigned char charToAscii(byte byte0, byte byte1);
@@ -123,8 +123,6 @@ private:
   HardwareSerial *_Serial;
   int8_t resetPin;
   int8_t dacMutePin;
-  int8_t dacFltPin;
-  int8_t dacDempPin;
   int8_t spiCsPin;
 };
 
