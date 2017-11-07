@@ -7,7 +7,7 @@ The DABDUINO is Arduino DAB/DAB+ (digital radio) + FM shield with 32-bit, 384kHz
 The library supports many functions for control DABDUINO and for access to broadcast data. For example - automatic station search and store stations in database, watching and reading DAB/DAB+ and FM station name, program type, information texts and data from DAB/DAB+/FM RDS, signal strength and quality, volume and stereo mode settings and many others. In near future I will add functions for access to media data from DAB/DAB+ stream. For example - images, audio stream, etc. 
 
 **Compatibility:**
-* Arduino (as shield): DUE, ZERO, M0, M0 PRO, TIAN, PRIMO 
+* Arduino (as shield): DUE, ZERO, M0, M0 PRO
 * Arduino (wired): MKRZero, MRK1000 
 
 > _Generally all Arduino 3.3V boards (Arduino 5V boards only with level shifting)_
