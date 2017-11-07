@@ -4,7 +4,7 @@ The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiv
 
 The DABDUINO is Arduino DAB/DAB+ (digital radio) + FM shield with 32-bit, 384kHz PCM DAC (cinch) + SPDIF/Toslink optical digital audio output. DABDUINO Library is designed specifically to work with the DABDUINO.
 
-The library supports many functions for control DABDUINO and for access to broadcast data. For example - automatic station search and store stations in database, watching and reading DAB/DAB+ and FM station name, program type, information texts and data from DAB/DAB+/FM RDS, signal strength and quality, volume and stereo mode settings and many others. In near future I will add functions for access to media data from DAB/DAB+ stream. For example - images, audio stream, etc. 
+The library supports many functions for control DABDUINO and for access to broadcast data. For example - automatic station search and store stations in database, watching and reading DAB/DAB+ and FM station name, program type, information texts and data from DAB/DAB+/FM RDS, signal strength and quality, volume and stereo mode settings and many others. In near future I will add functions for access to media data from DAB/DAB+ stream. For example - images, etc. 
 
 **Compatibility:**
 * Arduino (as shield): DUE, ZERO, M0, M0 PRO
