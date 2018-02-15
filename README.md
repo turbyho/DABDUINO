@@ -46,6 +46,8 @@ Example is available here [DABDUINO_example_1.ino](https://github.com/turbyho/DA
 ## Where to buy the DABDUINO?
 DABDUINO is ready for dispatch. Price is 69 EUR. Postage for Europe 6 EUR, for rest of the world 10 EUR. Send me order by [email](mailto:turbyho@gmail.com) please.
 
+Dabduino is dispatched without pin headers for easier installation in custom devices.
+
 ## Have some problem or questions?
 Send me [email](mailto:turbyho@gmail.com) :)
 
