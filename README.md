@@ -36,6 +36,9 @@ The library supports many functions for control DABDUINO and for access to broad
 **Power:**
 * DABDUINO is powered only from Arduino pin heads. No need external power source. 
 
+## How to connect (without pin headers)
+Minimal wiring is ANTENNA (use correct band), TX, RX, (DABDUINO) RESET, GND, +5V.
+
 ## How to install
 Open library manager in Arduino IDE and install the DABDUINO library.
 
