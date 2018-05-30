@@ -3,7 +3,7 @@
   DABDUINO is DAB+ digital radio shield for Arduino
   Created by Tomas Urbanek, Montyho technology Ltd., Januar 2, 2017.
   www.dabduino.com
-  */
+*/
 
 #include "DABDUINO.h"
 
@@ -29,6 +29,14 @@ void setup() {
     Serial.println("DAB NOT READY");
     while (1) {}
   }
+
+  /*
+    if(!dab.resetCleanDB()) {
+    Serial.println("DAB NOT READY");
+    while (1) {}
+    }
+  */
+
   Serial.println("DAB READY");
 
   Serial.print("Search for DAB programs:");
@@ -42,24 +50,24 @@ void setup() {
     if (status != lastStatus) {
       Serial.println();
       switch (status) {
-      case 0:
-        Serial.print("Playing");
-        break;
-      case 1:
-        Serial.print("Searching");
-        break;
-      case 2:
-        Serial.print("Tuning");
-        break;
-      case 3:
-        Serial.print("Stop");
-        break;
-      case 4:
-        Serial.print("Sorting");
-        break;
-      case 5:
-        Serial.print("Reconfiguration");
-        break;
+        case 0:
+          Serial.print("Playing");
+          break;
+        case 1:
+          Serial.print("Searching");
+          break;
+        case 2:
+          Serial.print("Tuning");
+          break;
+        case 3:
+          Serial.print("Stop");
+          break;
+        case 4:
+          Serial.print("Sorting");
+          break;
+        case 5:
+          Serial.print("Reconfiguration");
+          break;
       }
     }
     if (status == 0 || status == 3) break;
@@ -90,15 +98,6 @@ void setup() {
 
   programIndex = 0;
 
-  if (dab.playDAB(programIndex)) {
-    if (dab.getProgramLongName(programIndex, dabText)) {
-      Serial.print("Tuned program: (");
-      Serial.print(programIndex);
-      Serial.print(") ");
-      Serial.println(dabText);
-    }
-  }
-
   if (dab.eventNotificationEnable()) {
     Serial.println("Event notification enabled");
   }
@@ -106,25 +105,39 @@ void setup() {
 
 void loop() {
 
+  if (millis() % 20000 == 0) {
+
+    if(programIndex < programsIndex) {
+      programIndex++;  
+    } else {
+      programIndex = 0;
+    }
+
+    if (dab.playDAB(programIndex)) {
+      if (dab.getProgramLongName(programIndex, dabText)) {
+        Serial.print("Tuned program: (");
+        Serial.print(programIndex);
+        Serial.print(") ");
+        Serial.println(dabText);
+      }
+    }
+  }
+
   // EVENTS
   // EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
   if (dab.isEvent()) {
 
     switch (dab.readEvent()) {
-    case 1:
-      Serial.println("DAB program search finished.");
-      break;
-    case 2:
-      //do something when New DAB progam text
-      if (dab.getProgramText(dabText)) { // new text
-        Serial.print("DAB text event: ");
-        Serial.println(dabText);
-      }
-      break;
+      case 1:
+        Serial.println("DAB program search finished.");
+        break;
+      case 2:
+        //do something when New DAB progam text
+        if (dab.getProgramText(dabText)) { // new text
+          Serial.print("DAB text event: ");
+          Serial.println(dabText);
+        }
+        break;
     }
   }
 }
-
-
-
-
