@@ -1259,8 +1259,8 @@ int8_t DABDUINO::getRDSrawData(unsigned int *RDSblockA, unsigned int *RDSblockB,
     if (dabDataSize > 1) {
       *RDSblockA = (((long)dabData[0] << 8) + (long)dabData[1]);
       *RDSblockB = (((long)dabData[2] << 8) + (long)dabData[3]);
-      *RDSblockB = (((long)dabData[4] << 8) + (long)dabData[5]);
-      *RDSblockB = (((long)dabData[6] << 8) + (long)dabData[7]);
+      *RDSblockC = (((long)dabData[4] << 8) + (long)dabData[5]);
+      *RDSblockD = (((long)dabData[6] << 8) + (long)dabData[7]);
       *BlerA = (((long)dabData[8] << 8) + (long)dabData[9]);
       *BlerB = (((long)dabData[10] << 8) + (long)dabData[11]);
       *BlerC = (((long)dabData[12] << 8) + (long)dabData[13]);
