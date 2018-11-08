@@ -16,8 +16,8 @@ DABDUINO dab = DABDUINO(_DAB_SERIAL_PORT, _DAB_RESET_PIN, _DAB_DAC_MUTE_PIN, _DA
 
 // DAB variables
 char dabText[DAB_MAX_TEXT_LENGTH];
-unsigned int programsIndex = 0;
-unsigned int programIndex = 0;
+uint32_t programsIndex = 0;
+uint32_t programIndex = 0;
 
 void setup() {
 
@@ -42,8 +42,8 @@ void setup() {
   Serial.print("Search for DAB programs:");
   dab.searchDAB(1);
 
-  unsigned int status;
-  unsigned int lastStatus;
+  uint32_t status;
+  uint32_t lastStatus;
 
   while (true) {
     dab.playStatus(&status);
@@ -79,7 +79,7 @@ void setup() {
 
   dab.getProgramIndex(&programsIndex);
   Serial.println("Available programs: ");
-  for (unsigned int i = 0; i <= programsIndex; i++) {
+  for (uint32_t i = 0; i <= programsIndex; i++) {
     if (dab.getProgramLongName(i, dabText)) {
       Serial.print(i);
       Serial.print("\t ");

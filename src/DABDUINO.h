@@ -28,7 +28,7 @@ public:
 
   int8_t isEvent();
   int8_t readEvent();
-  int8_t sendCommand(byte dabCommand[], byte dabData[], unsigned int *dabDataSize);
+  int8_t sendCommand(byte dabCommand[], byte dabData[], uint32_t *dabDataSize);
 
   // *************************
   // ***** SYSETEM ***********
@@ -43,66 +43,66 @@ public:
   // ***** STREAM ************
   // *************************
 
-  int8_t playDAB(unsigned int programIndex);
-  int8_t playFM(unsigned int frequency);
+  int8_t playDAB(uint32_t programIndex);
+  int8_t playFM(uint32_t frequency);
   int8_t playBEEP();
   int8_t playSTOP();
-  int8_t searchDAB(unsigned int band);
-  int8_t searchFM(unsigned int seekDirection);
-  int8_t playStatus(unsigned int *data);
-  int8_t playMode(unsigned int *data);
-  int8_t getPlayIndex(unsigned int *data);
-  int8_t getSignalStrength(unsigned int *signalStrength, unsigned int *bitErrorRate);
+  int8_t searchDAB(uint32_t band);
+  int8_t searchFM(uint32_t seekDirection);
+  int8_t playStatus(uint32_t *data);
+  int8_t playMode(uint32_t *data);
+  int8_t getPlayIndex(uint32_t *data);
+  int8_t getSignalStrength(uint32_t *signalStrength, uint32_t *bitErrorRate);
   int8_t setStereoMode(boolean stereo);
-  int8_t getStereoMode(unsigned int *data);
-  int8_t getStereoType(unsigned int *data);
-  int8_t setVolume(unsigned int volumeLevel);
-  int8_t getVolume(unsigned int *data);
-  int8_t getProgramType(unsigned int *data);
-  int8_t getProgramShortName(unsigned int programIndex, char text[]);
-  int8_t getProgramLongName(unsigned int programIndex, char text[]);
+  int8_t getStereoMode(uint32_t *data);
+  int8_t getStereoType(uint32_t *data);
+  int8_t setVolume(uint32_t volumeLevel);
+  int8_t getVolume(uint32_t *data);
+  int8_t getProgramType(uint32_t *data);
+  int8_t getProgramShortName(uint32_t programIndex, char text[]);
+  int8_t getProgramLongName(uint32_t programIndex, char text[]);
   int8_t getProgramText(char text[]);
-  int8_t getSamplingRate(unsigned int *data);
-  int8_t getDataRate(unsigned int *data);
-  int8_t getSignalQuality(unsigned int *data);
-  int8_t getFrequency(unsigned int programIndex, unsigned int *data);
-  int8_t getEnsembleShortName(unsigned int programIndex, char text[]);
-  int8_t getEnsembleLongName(unsigned int programIndex, char text[]);
-  int8_t getProgramIndex(unsigned int *data);
-  int8_t isProgramOnAir(unsigned int programIndex);
-  int8_t getServiceShortName(unsigned int programIndex, char text[]);
-  int8_t getServiceLongName(unsigned int programIndex, char text[]);
-  int8_t getSearchIndex(unsigned int *data);
-  int8_t getServCompType(unsigned int programIndex, unsigned int *data);
-  int8_t setPreset(unsigned int programIndex, unsigned int presetIndex, unsigned int presetMode);
-  int8_t getPreset(unsigned int presetIndex, unsigned int presetMode, unsigned int *data);
-  int8_t getProgramInfo(unsigned int programIndex, unsigned int *serviceId, unsigned int *ensembleId);
-  int8_t getProgramSorter(unsigned int *data);
-  int8_t setProgramSorter(unsigned int sortMethod);
-  int8_t getDRC(unsigned int *data);
-  int8_t setDRC(unsigned int setDRC);
-  int8_t prunePrograms(unsigned int *prunedTotalPrograms, unsigned int *prunedProgramIndex);
-  int8_t getECC(unsigned int *ECC, unsigned int *countryId);
-  int8_t getRdsPIcode(unsigned int *data);
-  int8_t setFMstereoThdLevel(unsigned int RSSItresholdLevel);
-  int8_t getFMstereoThdLevel(unsigned int *data);
-  int8_t getRDSrawData(unsigned int *RDSblockA, unsigned int *RDSblockB, unsigned int *RDSblockC, unsigned int *RDSblockD, unsigned int *BlerA, unsigned int *BlerB, unsigned int *BlerC, unsigned int *BlerD);
-  int8_t setFMseekTreshold(unsigned int RSSItreshold);
-  int8_t getFMseekTreshold(unsigned int *data);
-  int8_t setFMstereoTreshold(unsigned int RSSIstereoTreshold);
-  int8_t getFMstereoTreshold(unsigned int *data);
-  int8_t getFMexactStation(unsigned int *data);
+  int8_t getSamplingRate(uint32_t *data);
+  int8_t getDataRate(uint32_t *data);
+  int8_t getSignalQuality(uint32_t *data);
+  int8_t getFrequency(uint32_t programIndex, uint32_t *data);
+  int8_t getEnsembleShortName(uint32_t programIndex, char text[]);
+  int8_t getEnsembleLongName(uint32_t programIndex, char text[]);
+  int8_t getProgramIndex(uint32_t *data);
+  int8_t isProgramOnAir(uint32_t programIndex);
+  int8_t getServiceShortName(uint32_t programIndex, char text[]);
+  int8_t getServiceLongName(uint32_t programIndex, char text[]);
+  int8_t getSearchIndex(uint32_t *data);
+  int8_t getServCompType(uint32_t programIndex, uint32_t *data);
+  int8_t setPreset(uint32_t programIndex, uint32_t presetIndex, uint32_t presetMode);
+  int8_t getPreset(uint32_t presetIndex, uint32_t presetMode, uint32_t *data);
+  int8_t getProgramInfo(uint32_t programIndex, uint32_t *serviceId, uint32_t *ensembleId);
+  int8_t getProgramSorter(uint32_t *data);
+  int8_t setProgramSorter(uint32_t sortMethod);
+  int8_t getDRC(uint32_t *data);
+  int8_t setDRC(uint32_t setDRC);
+  int8_t prunePrograms(uint32_t *prunedTotalPrograms, uint32_t *prunedProgramIndex);
+  int8_t getECC(uint32_t *ECC, uint32_t *countryId);
+  int8_t getRdsPIcode(uint32_t *data);
+  int8_t setFMstereoThdLevel(uint32_t RSSItresholdLevel);
+  int8_t getFMstereoThdLevel(uint32_t *data);
+  int8_t getRDSrawData(uint32_t *RDSblockA, uint32_t *RDSblockB, uint32_t *RDSblockC, uint32_t *RDSblockD, uint32_t *BlerA, uint32_t *BlerB, uint32_t *BlerC, uint32_t *BlerD);
+  int8_t setFMseekTreshold(uint32_t RSSItreshold);
+  int8_t getFMseekTreshold(uint32_t *data);
+  int8_t setFMstereoTreshold(uint32_t RSSIstereoTreshold);
+  int8_t getFMstereoTreshold(uint32_t *data);
+  int8_t getFMexactStation(uint32_t *data);
 
   // *************************
   // ***** RTC ***************
   // *************************
 
-  int8_t setRTCclock(unsigned int year, unsigned int month, unsigned int day, unsigned int hour, unsigned int minute, unsigned int second);
-  int8_t getRTCclock(unsigned int *year, unsigned int *month, unsigned int *week, unsigned int *day, unsigned int *hour, unsigned int *minute, unsigned int *second);
+  int8_t setRTCclock(uint32_t year, uint32_t month, uint32_t day, uint32_t hour, uint32_t minute, uint32_t second);
+  int8_t getRTCclock(uint32_t *year, uint32_t *month, uint32_t *week, uint32_t *day, uint32_t *hour, uint32_t *minute, uint32_t *second);
   int8_t RTCsyncEnable();
   int8_t RTCsyncDisable();
-  int8_t getRTCsyncStatus(unsigned int *data);
-  int8_t getRTCclockStatus(unsigned int *data);
+  int8_t getRTCsyncStatus(uint32_t *data);
+  int8_t getRTCclockStatus(uint32_t *data);
 
   // ********************************************
   // ***** MOT (Multimedia Object Transfer) *****
