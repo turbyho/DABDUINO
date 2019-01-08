@@ -1,6 +1,6 @@
 ## What is the DABDUINO?
 
-The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiver project, car receiver or anything you want. Optical audio outout (SPDIF/Toslink) and 32-bit, 384kHz PCM DAC offers the same audio quality as expensive DAB/DAB+ receivers.
+The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiver project, car receiver or anything you want. Optical audio outout (Toslink) and 32-bit, 384kHz PCM DAC offers the same audio quality as expensive DAB/DAB+ receivers.
 
 The DABDUINO is Arduino DAB/DAB+ (digital radio) + FM shield with 32-bit, 384kHz PCM DAC (cinch) + SPDIF/Toslink optical digital audio output. DABDUINO Library is designed specifically to work with the DABDUINO.
 
@@ -28,7 +28,7 @@ The library supports many functions for control DABDUINO and for access to broad
 
 **Output:**
 * Analog audio: 32-bit, 384kHz PCM DAC - stereo cinch (golden), solder pads
-* Digital audio: SPDIF / Toslink (optical)
+* Digital audio: Toslink (optical)
 
 **Real Time Clock (RTC):**
 * on board, synchronised from DAB/DAB+ stream 
