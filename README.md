@@ -47,7 +47,8 @@ For command reference visit [DABDUINO.cpp](https://github.com/turbyho/DABDUINO/b
 Example is available here [DABDUINO_example_1.ino](https://github.com/turbyho/DABDUINO/blob/master/examples/Dabduino_example_1/DABDUINO_example_1.ino).
 
 ## Where to buy the DABDUINO?
-DABDUINO is ready for dispatch. Price is 69 EUR. Postage for Europe 6 EUR, for rest of the world 10 EUR. Send me order by [email](mailto:turbyho@gmail.com) please.
+Currently unavailable 
+<!-- DABDUINO is ready for dispatch. Price is 69 EUR. Postage for Europe 6 EUR, for rest of the world 10 EUR. Send me order by [email](mailto:turbyho@gmail.com) please.-->
 
 Dabduino is dispatched without pin headers and SMA for easier installation in custom devices.
 
