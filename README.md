@@ -68,4 +68,4 @@ Send me [email](mailto:turbyho@gmail.com) :)
 ### Pinout
 ![DABDUINO PINOUT](doc/dabduino_pinout_v1.0.png)
 
-![Montyho technology s.r.o.](https://www.montyho.com)
+[Montyho technology s.r.o.](https://www.montyho.com)
