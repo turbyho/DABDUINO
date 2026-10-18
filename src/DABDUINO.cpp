@@ -13,6 +13,11 @@ DABDUINO::DABDUINO(HardwareSerial& serial, int8_t RESET_PIN, int8_t DAC_MUTE_PIN
   resetPin = RESET_PIN;
   dacMutePin = DAC_MUTE_PIN;
   spiCsPin = SPI_CS_PIN;
+  rxState = RX_START;
+  rxLength = 0;
+  rxIndex = 0;
+  eventHead = 0;
+  eventCount = 0;
 
 }
 
@@ -99,22 +104,45 @@ byte DABDUINO::charToAscii(byte byte1, byte byte0) {
     }
   }
 
-  if (byte1 == 0x01) {
-    switch (byte0)
-    {
-    case 0x1B: return (0x65); break; // ě > e
-    case 0x48: return (0x6e); break; // ň > n
-    case 0x59: return (0x72); break; // ř > r
-    case 0x0D: return (0x63); break; // č > c
-    case 0x7E: return (0x7A); break; // ž > z
-    case 0x0C: return (0x43); break; // Č > C
-    }
+  if (byte1 == 0x01 && byte0 < 0x80) {
+    // Unicode Latin Extended-A (U+0100..U+017F) to ASCII letters without the diacritic marks.
+    // For example: č > c, ď > d, ě > e, ň > n, ř > r, š > s, ť > t, ů > u, ž > z, ľ > l, ł > l
+    static const char latinExtendedA[] =
+      "AaAaAaCcCcCcCcDd"  // U+0100
+      "DdEeEeEeEeEeGgGg"  // U+0110
+      "GgGgHhHhIiIiIiIi"  // U+0120
+      "IiIiJjKkkLlLlLlL"  // U+0130
+      "lLlNnNnNnnNnOoOo"  // U+0140
+      "OoOoRrRrRrSsSsSs"  // U+0150
+      "SsTtTtTtUuUuUuUu"  // U+0160
+      "UuUuWwYyYZzZzZzs"; // U+0170
+    return (byte)latinExtendedA[byte0];
   }
 
   return  (0x20);
 }
 
-void DABDUINO::init() {
+/*
+ * Convert the response data (UCS-2, two bytes for each character) to an ASCII text
+ * The text has a maximum of DAB_MAX_TEXT_LENGTH - 1 characters and a terminating zero.
+ * text: buffer of DAB_MAX_TEXT_LENGTH bytes
+ * return: number of characters in the text
+ */
+uint32_t DABDUINO::dataToText(byte dabData[], uint32_t dabDataSize, char text[]) {
+  uint32_t j = 0;
+  for (uint32_t i = 0; i + 1 < dabDataSize && j < DAB_MAX_TEXT_LENGTH - 1; i = i + 2) {
+    text[j++] = (char)charToAscii(dabData[i], dabData[i + 1]);
+  }
+  text[j] = '\0';
+  return j;
+}
+
+/*
+ *   Start the DAB module: set the pins and the serial port, do a hardware reset of the module,
+ *   and wait until the module is ready
+ *   return: 1=ready, 0=the module is not ready after DAB_READY_TIMEOUT ms
+ */
+int8_t DABDUINO::init() {
 
   // DAC MUTE
   pinMode(dacMutePin, OUTPUT);
@@ -135,110 +163,163 @@ void DABDUINO::init() {
   digitalWrite(resetPin, HIGH);
   delay(1000);
 
+  // Drop the state of the packet receiver and the events from before the reset
+  rxState = RX_START;
+  eventHead = 0;
+  eventCount = 0;
+
+  unsigned long startMillis = millis();
   while (!isReady()) {
+    if (millis() - startMillis >= DAB_READY_TIMEOUT) {
+      return 0;
+    }
     delay(100);
+  }
+  return 1;
+}
+
+/*
+ *   Give one byte from the DAB module to the packet receiver
+ *   A packet is: 0xFE, type, id, serial number, length (2 bytes, MSB first), data, 0xFD.
+ *   The receiver uses the length field to find the end of the packet. Thus the data
+ *   can contain the values 0xFE and 0xFD.
+ *   data: buffer for the packet data (DAB_MAX_DATA_LENGTH bytes), or NULL to ignore the data
+ *   return: 1=complete packet (header in rxHeader, data length in rxLength), 0=no complete packet
+ */
+int8_t DABDUINO::receiveByte(byte serialData, byte data[]) {
+  switch (rxState) {
+  case RX_START:
+    if (serialData == 0xFE) {
+      rxHeader[0] = serialData;
+      rxIndex = 1;
+      rxState = RX_HEADER;
+    }
+    break;
+  case RX_HEADER:
+    rxHeader[rxIndex++] = serialData;
+    if (rxIndex == sizeof(rxHeader)) {
+      rxLength = ((uint16_t)rxHeader[4] << 8) | rxHeader[5];
+      if (rxLength > DAB_MAX_DATA_LENGTH) {
+        // Not a valid header. Find the next start byte.
+        rxState = RX_START;
+      } else {
+        rxIndex = 0;
+        rxState = (rxLength > 0) ? RX_DATA : RX_END;
+      }
+    }
+    break;
+  case RX_DATA:
+    if (data != NULL) {
+      data[rxIndex] = serialData;
+    }
+    rxIndex++;
+    if (rxIndex == rxLength) {
+      rxState = RX_END;
+    }
+    break;
+  case RX_END:
+    rxState = RX_START;
+    if (serialData == 0xFD) {
+      return 1;
+    }
+    // No end byte at the correct position. Drop the packet.
+    if (serialData == 0xFE) {
+      rxHeader[0] = serialData;
+      rxIndex = 1;
+      rxState = RX_HEADER;
+    }
+    break;
+  }
+  return 0;
+}
+
+/*
+ *   Put an event into the event queue. If the queue is full, the event is lost.
+ */
+void DABDUINO::queueEvent(uint8_t event) {
+  if (eventCount < DAB_EVENT_QUEUE_SIZE) {
+    eventQueue[(eventHead + eventCount) % DAB_EVENT_QUEUE_SIZE] = event;
+    eventCount++;
   }
 }
 
+/*
+ *   Read the received bytes. Put the events into the event queue, ignore the other packets.
+ */
+void DABDUINO::pollEvents() {
+  while (_Serial->available() > 0) {
+    if (receiveByte(_Serial->read(), NULL) && rxHeader[1] == 0x07) {
+      queueEvent(rxHeader[2] + 1);
+    }
+  }
+}
+
+/*
+ *   Test for events from the DAB module
+ *   return: number of events in the event queue
+ */
 int8_t DABDUINO::isEvent() {
-  return _Serial->available();
+  pollEvents();
+  return eventCount;
 }
 
 /*
  *   Read event
  *   RETURN EVENT TYP: 1=scan finish, 2=got new DAB program text, 3=DAB reconfiguration, 4=DAB channel list order change, 5=RDS group, 6=Got new FM radio text, 7=Return the scanning frequency /FM/
+ *   return 0: no event in DAB_RESPONSE_TIMEOUT ms
  */
 int8_t DABDUINO::readEvent() {
-  byte eventData[16];
-  byte dabReturn[6];
-  byte isPacketCompleted = 0;
-  uint16_t byteIndex = 0;
-  uint16_t dataIndex = 0;
-  byte serialData = 0;
-  uint8_t eventDataSize = 128;
-  unsigned long endMillis = millis() + 200; // timeout for answer from module = 200ms
-  while (millis() < endMillis && dataIndex < DAB_MAX_DATA_LENGTH) {
-    if (_Serial->available() > 0) {
-      serialData = _Serial->read();
-      if (serialData == 0xFE) {
-        byteIndex = 0;
-        dataIndex = 0;
-      }
-      if (eventDataSize && dataIndex < eventDataSize) {
-        eventData[dataIndex++] = serialData;
-      }
-      if (byteIndex <= 5) {
-        dabReturn[byteIndex] = serialData;
-      }
-      if (byteIndex == 5) {
-        eventDataSize = (((long)dabReturn[4] << 8) + (long)dabReturn[5]);
-      }
-      if ((int16_t)(byteIndex - eventDataSize) >= 5 && serialData == 0xFD) {
-        isPacketCompleted = 1;
-        break;
-      }
-      byteIndex++;
-    }
+  unsigned long startMillis = millis();
+  pollEvents();
+  while (eventCount == 0 && millis() - startMillis < DAB_RESPONSE_TIMEOUT) {
+    pollEvents();
   }
-  while (_Serial->available() > 0) {
-    _Serial->read();
-  }
-  if (isPacketCompleted == 1 && dabReturn[1] == 0x07) {
-    return dabReturn[2] + 1;
-  } else {
+  if (eventCount == 0) {
     return 0;
   }
+  uint8_t event = eventQueue[eventHead];
+  eventHead = (eventHead + 1) % DAB_EVENT_QUEUE_SIZE;
+  eventCount--;
+  return event;
 }
 
 /*
  *  Send command to DAB module and wait for answer
+ *  The module sends one response for each command. Thus the first packet after the command
+ *  that is not an event is the response. The events that come before the response go into
+ *  the event queue. For a command of the event type (0x07), the first packet is the response.
+ *  dabData: buffer for the response data, DAB_MAX_DATA_LENGTH bytes
+ *  dabDataSize: length of the response data
+ *  return: 1=response received (no NACK), 0=NACK, timeout or incorrect command
  */
 int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], uint32_t *dabDataSize) {
 
-  byte dabReturn[6];
-  byte isPacketCompleted = 0;
-  uint16_t byteIndex = 0;
-  uint16_t dataIndex = 0;
-  byte serialData = 0;
   *dabDataSize = 0;
-  while (_Serial->available() > 0) {
-    _Serial->read();
-  }
-  while (byteIndex < 255) {
-    if (dabCommand[byteIndex++] == 0xFD) break;
-  }
-  _Serial->write(dabCommand, byteIndex);
-  _Serial->flush();
-  byteIndex = 0;
-  unsigned long endMillis = millis() + 200; // timeout for answer from module = 200ms
-  while (millis() < endMillis && dataIndex < DAB_MAX_DATA_LENGTH) {
-    if (_Serial->available() > 0) {
-      serialData = _Serial->read();
-      if (serialData == 0xFE) {
-        byteIndex = 0;
-        dataIndex = 0;
-      }
-      if (*dabDataSize && dataIndex < *dabDataSize) {
-        dabData[dataIndex++] = serialData;
-      }
-      if (byteIndex <= 5) {
-        dabReturn[byteIndex] = serialData;
-      }
-      if (byteIndex == 5) {
-        *dabDataSize = (((long)dabReturn[4] << 8) + (long)dabReturn[5]);
-      }
-      if ((int16_t)(byteIndex - *dabDataSize) >= 5 && serialData == 0xFD) {
-        isPacketCompleted = 1;
-        break;
-      }
-      byteIndex++;
-    }
-  }
-  if (isPacketCompleted == 1 && !(dabReturn[1] == 0x00 && dabReturn[2] == 0x02)) {
-    return 1;
-  } else {
+  uint16_t commandLength = 7 + (((uint16_t)dabCommand[4] << 8) | dabCommand[5]);
+  if (dabCommand[0] != 0xFE || dabCommand[commandLength - 1] != 0xFD) {
     return 0;
   }
+
+  // Keep the events that the module sent before this command. Drop the late responses.
+  pollEvents();
+
+  _Serial->write(dabCommand, commandLength);
+  _Serial->flush();
+
+  unsigned long startMillis = millis();
+  while (millis() - startMillis < DAB_RESPONSE_TIMEOUT) {
+    if (_Serial->available() > 0 && receiveByte(_Serial->read(), dabData)) {
+      if (rxHeader[1] != 0x07 || dabCommand[1] == 0x07) {
+        *dabDataSize = rxLength;
+        if (rxHeader[1] == 0x00 && rxHeader[2] == 0x02) {
+          return 0; // NACK
+        }
+        return 1;
+      }
+      queueEvent(rxHeader[2] + 1);
+    }
+  }
+  return 0;
 }
 
 // *************************
@@ -247,14 +328,14 @@ int8_t DABDUINO::sendCommand(byte dabCommand[], byte dabData[], uint32_t *dabDat
 
 /*
  *   Reset DAB module only
+ *   return: 1=the module is ready after the reset, 0=no response or the module is not ready
  */
 int8_t DABDUINO::reset() {
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
   byte dabCommand[8] = { 0xFE, 0x00, 0x01, 0x00, 0x00, 0x01, 0, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    init();
-    return 1;
+    return init();
   } else {
     return 0;
   }
@@ -262,14 +343,15 @@ int8_t DABDUINO::reset() {
 
 /*
  *   Clean DAB module database and reset module
+ *   The database is in the flash memory of the module. Do not do this at each start.
+ *   return: 1=the module is ready after the reset, 0=no response or the module is not ready
  */
 int8_t DABDUINO::resetCleanDB() {
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
   byte dabCommand[8] = { 0xFE, 0x00, 0x01, 0x00, 0x00, 0x01, 1, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    init();
-    return 1;
+    return init();
   } else {
     return 0;
   }
@@ -299,7 +381,7 @@ int8_t DABDUINO::setAudioOutput(boolean spdiv = true, boolean cinch = true) {
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
   byte s;
-  if (spdiv && spdiv) {
+  if (spdiv && cinch) {
     s = B00000011;
   } else if (spdiv && !cinch) {
     s = B00000001;
@@ -434,9 +516,8 @@ int8_t DABDUINO::searchFM(uint32_t searchDirection) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  if (searchDirection < 0) searchDirection = 0;
   if (searchDirection > 1) searchDirection = 1;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x02, 0x00, 0x00, 0x01, searchDirection, 0xFD };
+  byte dabCommand[8] = { 0xFE, 0x01, 0x02, 0x00, 0x00, 0x01, (byte)searchDirection, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -521,9 +602,12 @@ int8_t DABDUINO::getSignalStrength(uint32_t *signalStrength, uint32_t *bitErrorR
   uint32_t dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x08, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
+    if (dabDataSize < 1) {
+      return 0;
+    }
     *signalStrength = (uint32_t)dabData[0];
     *bitErrorRate = 0;
-    if (dabDataSize > 1) {
+    if (dabDataSize >= 3) {
       *bitErrorRate =  (((long)dabData[1] << 8) + (long)dabData[2]);
     }
     return 1;
@@ -544,7 +628,7 @@ int8_t DABDUINO::setStereoMode(boolean stereo = true) {
   }
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x09, 0x00, 0x00, 0x01, value, 0xFD };
+  byte dabCommand[8] = { 0xFE, 0x01, 0x09, 0x00, 0x00, 0x01, (byte)value, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -602,9 +686,8 @@ int8_t DABDUINO::setVolume(uint32_t volumeLevel) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  if (volumeLevel < 0) volumeLevel = 0;
   if (volumeLevel > 16)  volumeLevel = 16;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x0C, 0x00, 0x00, 0x01, volumeLevel, 0xFD };
+  byte dabCommand[8] = { 0xFE, 0x01, 0x0C, 0x00, 0x00, 0x01, (byte)volumeLevel, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -667,10 +750,7 @@ int8_t DABDUINO::getProgramShortName(uint32_t programIndex, char text[]) {
   uint32_t dabDataSize;
   byte dabCommand[12] = { 0xFE, 0x01, 0x0F, 0x00, 0x00, 0x05, Byte3, Byte2, Byte1, Byte0, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    uint32_t j = 0;
-    for (uint32_t i = 0; i < dabDataSize; i = i + 2) {
-      text[j++] = (char)charToAscii(dabData[i], dabData[i + 1]);
-    }
+    dataToText(dabData, dabDataSize, text);
     return 1;
   } else {
     return 0;
@@ -690,10 +770,7 @@ int8_t DABDUINO::getProgramLongName(uint32_t programIndex, char text[]) {
   uint32_t dabDataSize;
   byte dabCommand[12] = { 0xFE, 0x01, 0x0F, 0x00, 0x00, 0x05, Byte3, Byte2, Byte1, Byte0, 0x01, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    uint32_t j = 0;
-    for (uint32_t i = 0; i < dabDataSize; i = i + 2) {
-      text[j++] = (char)charToAscii(dabData[i], dabData[i + 1]);
-    }
+    dataToText(dabData, dabDataSize, text);
     return 1;
   } else {
     return 0;
@@ -703,29 +780,26 @@ int8_t DABDUINO::getProgramLongName(uint32_t programIndex, char text[]) {
 /*
  * Get DAB text event
  * return: 1=new text, 2=text is same, 3=no text
- * dabText: text
+ * text: buffer of DAB_MAX_TEXT_LENGTH bytes. Before the call, it holds the last text.
+ *       After the call, it holds the new text, or an empty text for return 3.
  */
 int8_t DABDUINO::getProgramText(char text[]) {
 
   char textLast[DAB_MAX_TEXT_LENGTH];
   memcpy(textLast, text, sizeof(text[0])*DAB_MAX_TEXT_LENGTH);
+  textLast[DAB_MAX_TEXT_LENGTH - 1] = '\0';
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x10, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if (dabDataSize == 1) {
-      text[0] = dabData[0]; // 0=There is no text in programe, 1=The program text received, but no text available
-      text[1] = 0x00;
+    if (dabDataSize < 2) {
+      // dabData[0]: 0=There is no text in programe, 1=The program text received, but no text available
+      text[0] = '\0';
       return 3; // No error, but no text
     }
-    int32_t j = 0;
-    for (uint32_t i = 0; i < dabDataSize; i = i + 2) {
-      text[j++] = (char)charToAscii(dabData[i], dabData[i + 1]);
-    }
-    for (uint32_t i = 0; i < j; i++) {
-      if (text[i] != textLast[i]) {
-        return 1; // New dab text
-      }
+    dataToText(dabData, dabDataSize, text);
+    if (strcmp(text, textLast) != 0) {
+      return 1; // New dab text
     }
     return 2; // Same dab text
   } else {
@@ -764,7 +838,7 @@ int8_t DABDUINO::getDataRate(uint32_t *data) {
   uint32_t dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x12, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if (dabDataSize) {
+    if (dabDataSize >= 2) {
       *data = (((long)dabData[0] << 8) + (long)dabData[1]);
       return 1;
     } else {
@@ -840,10 +914,7 @@ int8_t DABDUINO::getEnsembleShortName(uint32_t programIndex, char text[]) {
   uint32_t dabDataSize;
   byte dabCommand[12] = { 0xFE, 0x01, 0x15, 0x00, 0x00, 0x05, Byte3, Byte2, Byte1, Byte0, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    uint32_t j = 0;
-    for (uint32_t i = 0; i < dabDataSize; i = i + 2) {
-      text[j++] = (char)charToAscii(dabData[i], dabData[i + 1]);
-    }
+    dataToText(dabData, dabDataSize, text);
     return 1;
   } else {
     return 0;
@@ -863,10 +934,7 @@ int8_t DABDUINO::getEnsembleLongName(uint32_t programIndex, char text[]) {
   uint32_t dabDataSize;
   byte dabCommand[12] = { 0xFE, 0x01, 0x15, 0x00, 0x00, 0x05, Byte3, Byte2, Byte1, Byte0, 0x01, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    uint32_t j = 0;
-    for (uint32_t i = 0; i < dabDataSize; i = i + 2) {
-      text[j++] = (char)charToAscii(dabData[i], dabData[i + 1]);
-    }
+    dataToText(dabData, dabDataSize, text);
     return 1;
   } else {
     return 0;
@@ -929,10 +997,7 @@ int8_t DABDUINO::getServiceShortName(uint32_t programIndex, char text[]) {
   uint32_t dabDataSize;
   byte dabCommand[12] = { 0xFE, 0x01, 0x1A, 0x00, 0x00, 0x05, Byte3, Byte2, Byte1, Byte0, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    uint32_t j = 0;
-    for (uint32_t i = 0; i < dabDataSize; i = i + 2) {
-      text[j++] = (char)charToAscii(dabData[i], dabData[i + 1]);
-    }
+    dataToText(dabData, dabDataSize, text);
     return 1;
   } else {
     return 0;
@@ -952,10 +1017,7 @@ int8_t DABDUINO::getServiceLongName(uint32_t programIndex, char text[]) {
   uint32_t dabDataSize;
   byte dabCommand[12] = { 0xFE, 0x01, 0x1A, 0x00, 0x00, 0x05, Byte3, Byte2, Byte1, Byte0, 0x01, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    uint32_t j = 0;
-    for (uint32_t i = 0; i < dabDataSize; i = i + 2) {
-      text[j++] = (char)charToAscii(dabData[i], dabData[i + 1]);
-    }
+    dataToText(dabData, dabDataSize, text);
     return 1;
   } else {
     return 0;
@@ -1020,7 +1082,7 @@ int8_t DABDUINO::setPreset(uint32_t programIndex, uint32_t presetIndex, uint32_t
   byte Byte3 = ((programIndex >> 24) & 0xFF);
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[13] = { 0xFE, 0x01, 0x21, 0x00, 0x00, 0x06, presetMode, presetIndex, Byte3, Byte2, Byte1, Byte0, 0xFD };
+  byte dabCommand[13] = { 0xFE, 0x01, 0x21, 0x00, 0x00, 0x06, (byte)presetMode, (byte)presetIndex, Byte3, Byte2, Byte1, Byte0, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -1037,12 +1099,13 @@ int8_t DABDUINO::getPreset(uint32_t presetIndex, uint32_t presetMode, uint32_t *
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[9] = { 0xFE, 0x01, 0x22, 0x00, 0x00, 0x02, presetMode, presetIndex, 0xFD };
+  byte dabCommand[9] = { 0xFE, 0x01, 0x22, 0x00, 0x00, 0x02, (byte)presetMode, (byte)presetIndex, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if(dabDataSize) {
+    if (dabDataSize >= 4) {
       *data = (((long)dabData[0] << 24) + ((long)dabData[1] << 16) + ((long)dabData[2] << 8) + (long)dabData[3]);
+      return 1;
     }
-    return 1;
+    return 0;
   } else {
     return 0;
   }
@@ -1063,7 +1126,7 @@ int8_t DABDUINO::getProgramInfo(uint32_t programIndex, uint32_t *serviceId, uint
   uint32_t dabDataSize;
   byte dabCommand[11] = { 0xFE, 0x01, 0x23, 0x00, 0x00, 0x04, Byte3, Byte2, Byte1, Byte0, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if (dabDataSize) {
+    if (dabDataSize >= 6) {
       *serviceId = (((long)dabData[0] << 24) + ((long)dabData[1] << 16) + ((long)dabData[2] << 8) + (long)dabData[3]);
       *ensembleId = (((long)dabData[4] << 8) + (long)dabData[5]);
       return 1;
@@ -1102,7 +1165,7 @@ int8_t DABDUINO::setProgramSorter(uint32_t sortMethod) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x25, 0x00, 0x00, 0x01, sortMethod, 0xFD };
+  byte dabCommand[8] = { 0xFE, 0x01, 0x25, 0x00, 0x00, 0x01, (byte)sortMethod, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -1138,7 +1201,7 @@ int8_t DABDUINO::setDRC(uint32_t setDRC) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x27, 0x00, 0x00, 0x01, setDRC, 0xFD };
+  byte dabCommand[8] = { 0xFE, 0x01, 0x27, 0x00, 0x00, 0x01, (byte)setDRC, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -1157,7 +1220,7 @@ int8_t DABDUINO::prunePrograms(uint32_t *prunedTotalPrograms, uint32_t *prunedPr
   uint32_t dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x2B, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if (dabDataSize) {
+    if (dabDataSize >= 4) {
       *prunedTotalPrograms = (((long)dabData[0] << 8) + (long)dabData[1]);
       *prunedProgramIndex = (((long)dabData[2] << 8) + (long)dabData[3]);
       return 1;
@@ -1179,7 +1242,7 @@ int8_t DABDUINO::getECC(uint32_t *ECC, uint32_t *countryId) {
   uint32_t dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x2D, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if (dabDataSize) {
+    if (dabDataSize >= 2) {
       *ECC = (uint32_t)dabData[0];
       *countryId = (uint32_t)dabData[1];
       return 1;
@@ -1200,7 +1263,7 @@ int8_t DABDUINO::getRdsPIcode(uint32_t *data) {
   uint32_t dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x2E, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if (dabDataSize) {
+    if (dabDataSize >= 2) {
       *data = (((long)dabData[0] << 8) + (long)dabData[1]);
       return 1;
     }
@@ -1218,7 +1281,7 @@ int8_t DABDUINO::setFMstereoThdLevel(uint32_t RSSItresholdLevel) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x30, 0x00, 0x00, 0x01, RSSItresholdLevel, 0xFD };
+  byte dabCommand[8] = { 0xFE, 0x01, 0x30, 0x00, 0x00, 0x01, (byte)RSSItresholdLevel, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -1256,7 +1319,7 @@ int8_t DABDUINO::getRDSrawData(uint32_t *RDSblockA, uint32_t *RDSblockB, uint32_
   uint32_t dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x01, 0x32, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if (dabDataSize > 1) {
+    if (dabDataSize >= 16) {
       *RDSblockA = (((long)dabData[0] << 8) + (long)dabData[1]);
       *RDSblockB = (((long)dabData[2] << 8) + (long)dabData[3]);
       *RDSblockC = (((long)dabData[4] << 8) + (long)dabData[5]);
@@ -1266,7 +1329,7 @@ int8_t DABDUINO::getRDSrawData(uint32_t *RDSblockA, uint32_t *RDSblockB, uint32_
       *BlerC = (((long)dabData[12] << 8) + (long)dabData[13]);
       *BlerD = (((long)dabData[14] << 8) + (long)dabData[15]);
       return 1;
-    } else {
+    } else if (dabDataSize == 1) {
       if (dabData[0] == 1) {
         return 2;
       } else {
@@ -1287,7 +1350,7 @@ int8_t DABDUINO::setFMseekTreshold(uint32_t RSSItreshold) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x35, 0x00, 0x00, 0x01, RSSItreshold, 0xFD };
+  byte dabCommand[8] = { 0xFE, 0x01, 0x35, 0x00, 0x00, 0x01, (byte)RSSItreshold, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -1323,7 +1386,7 @@ int8_t DABDUINO::setFMstereoTreshold(uint32_t RSSIstereoTreshold) {
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[8] = { 0xFE, 0x01, 0x37, 0x00, 0x00, 0x01, RSSIstereoTreshold, 0xFD };
+  byte dabCommand[8] = { 0xFE, 0x01, 0x37, 0x00, 0x00, 0x01, (byte)RSSIstereoTreshold, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -1383,7 +1446,7 @@ int8_t DABDUINO::setRTCclock(uint32_t year, uint32_t month, uint32_t day, uint32
 
   byte dabData[DAB_MAX_DATA_LENGTH];
   uint32_t dabDataSize;
-  byte dabCommand[14] = { 0xFE, 0x02, 0x00, 0x00, 0x00, 0x07, second, minute, hour, day, 0x00, month, year, 0xFD };
+  byte dabCommand[14] = { 0xFE, 0x02, 0x00, 0x00, 0x00, 0x07, (byte)second, (byte)minute, (byte)hour, (byte)day, 0x00, (byte)month, (byte)year, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
     return 1;
   } else {
@@ -1401,7 +1464,7 @@ int8_t DABDUINO::getRTCclock(uint32_t *year, uint32_t *month, uint32_t *week, ui
   uint32_t dabDataSize;
   byte dabCommand[7] = { 0xFE, 0x02, 0x01, 0x00, 0x00, 0x00, 0xFD };
   if (sendCommand(dabCommand, dabData, &dabDataSize)) {
-    if (dabDataSize) {
+    if (dabDataSize >= 7) {
       *second = (uint32_t)dabData[0];
       *minute = (uint32_t)dabData[1];
       *hour = (uint32_t)dabData[2];

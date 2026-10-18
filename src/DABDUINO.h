@@ -9,6 +9,9 @@
 
 #define DAB_MAX_TEXT_LENGTH 128
 #define DAB_MAX_DATA_LENGTH 2 * DAB_MAX_TEXT_LENGTH
+#define DAB_RESPONSE_TIMEOUT 200 // ms, the time to wait for a response from the DAB module
+#define DAB_EVENT_QUEUE_SIZE 8
+#define DAB_READY_TIMEOUT 10000 // ms, the time to wait for the DAB module after a hardware reset
 
 namespace constants
 {
@@ -22,9 +25,9 @@ public:
   DABDUINO (HardwareSerial& serial, int8_t RESET_PIN, int8_t DAC_MUTE_PIN, int8_t SPI_CS_PIN);
   Stream& _s;
 
-  unsigned char charToAscii(byte byte0, byte byte1);
+  unsigned char charToAscii(byte byte1, byte byte0);
 
-  void init();
+  int8_t init();
 
   int8_t isEvent();
   int8_t readEvent();
@@ -124,5 +127,22 @@ private:
   int8_t resetPin;
   int8_t dacMutePin;
   int8_t spiCsPin;
+
+  // Receiver of the packets from the DAB module
+  enum RxState : uint8_t { RX_START, RX_HEADER, RX_DATA, RX_END };
+  RxState rxState;
+  byte rxHeader[6];
+  uint16_t rxLength;
+  uint16_t rxIndex;
+
+  // Events that the DAB module sent and the application did not read yet
+  uint8_t eventQueue[DAB_EVENT_QUEUE_SIZE];
+  uint8_t eventHead;
+  uint8_t eventCount;
+
+  uint32_t dataToText(byte dabData[], uint32_t dabDataSize, char text[]);
+  int8_t receiveByte(byte serialData, byte data[]);
+  void queueEvent(uint8_t event);
+  void pollEvents();
 };
 
