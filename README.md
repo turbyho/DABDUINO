@@ -1,20 +1,58 @@
 ## A new DABDUINO is coming
 
-DABDUINO comes back. We develop a new DABDUINO: a DAB+ and FM radio board for
-makers. It will connect to ESP32, Raspberry Pi Pico, STM32, Arduino and
-other microcontroller boards with any logic voltage from 1.8 V to 5 V.
+DABDUINO comes back. We develop a new DABDUINO: a complete DAB+, FM and
+internet radio board for makers, with an ESP32-S3 microcontroller on the
+board. It plays without other boards, and other microcontroller boards can
+also control it. These are the planned functions:
 
-* The firmware of the radio receiver is on the board. Your board controls the
-  radio with simple commands through a UART.
-* A high-quality DAC with an analog stereo output, digital audio output (I2S)
-  and an optical SPDIF (Toslink) output.
-* Open hardware and an open source library.
+**Radio**
+
+* DAB, DAB+ and FM with RDS
+* Station names and text information (DLS), and station pictures (slideshow)
+  on a display
+* Internet radio through Wi-Fi (MP3 and AAC streams)
+
+**Control**
+
+* From your phone or from a web browser through Wi-Fi, with a web interface
+  in the firmware
+* From your phone through Bluetooth LE (control only, no audio)
+* From a smart home system, for example Home Assistant (MQTT), also as a
+  player for the audio of Home Assistant
+* Headers for a display, a rotary encoder, buttons and an IR receiver for a
+  remote control
+* Clock and alarm, with the time from DAB or from the internet
+
+**Sound**
+
+* Line output and an optical SPDIF (Toslink) output
+* An expansion connector for audio modules: you select a headphone amplifier
+  or a speaker amplifier for your project, to your preferences
+* Or a Bluetooth module on the same connector, which sends the audio to
+  Bluetooth headphones and speakers
+
+**Power**
+
+* USB-C, a DC input from 5 V to 16 V, or the supply of the host board
+
+**For makers**
+
+* Write your own firmware for the ESP32-S3 with Arduino or ESP-IDF. An open
+  source DABDUINO library controls the radio and the other parts of the
+  board.
+* Or use the board as a radio for Arduino, STM32, Raspberry Pi and other
+  boards, through UART or I2C, with any logic voltage from 1.8 V to 5 V
+* Firmware updates through Wi-Fi (OTA) or USB-C
+* Open hardware and open source firmware. The firmware of the radio receiver
+  is installed in the flash memory of the board.
+
+Open source projects can add more functions.
 
 The new DABDUINO is in development. Information and news:
 https://www.dabduino.com
 
-Tell us which boards and functions you want: open an issue in this repository,
-or send an email to turbyho@gmail.com.
+Tell us which functions you want: open an issue in this repository, or send
+an email to turbyho@gmail.com.
 
 The text below describes the original DABDUINO (2017).
 
