@@ -1,3 +1,23 @@
+## A new DABDUINO is coming
+
+We plan to bring DABDUINO back. The new DABDUINO is a DAB+ and FM radio board
+for makers. It will connect to ESP32, Raspberry Pi Pico, STM32, Arduino and
+other microcontroller boards with any logic voltage from 1.8 V to 5 V.
+
+* The firmware of the radio receiver is on the board. Your board controls the
+  radio with simple commands through a UART.
+* A high-quality DAC with an analog stereo output, digital audio output (I2S)
+  and an optical SPDIF (Toslink) output.
+* Open hardware and an open source library.
+
+The new DABDUINO is in the planning phase. Information and news:
+https://www.dabduino.com
+
+Tell us which boards and functions you want: open an issue in this repository,
+or send an email to turbyho@gmail.com.
+
+The text below describes the original DABDUINO (2017).
+
 ## What is the DABDUINO?
 
 The DABDUINO is good starting point for high quality DIY DAB/DAB+/FM home receiver project, car receiver or anything you want. Digital optical audio outout (Toslink) and 32-bit, 384kHz PCM DAC offers the same audio quality as expensive DAB/DAB+ receivers.
