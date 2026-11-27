@@ -7,10 +7,16 @@ also control it. These are the planned functions:
 
 **Radio**
 
-* DAB, DAB+ and FM with RDS
+* DAB, DAB+ and FM with RDS. DAB and DAB+ in Band III.
 * Station names and text information (DLS), and station pictures (slideshow)
   on a display
 * Internet radio through Wi-Fi (MP3 and AAC streams)
+* An indoor antenna or an outdoor antenna on the roof, for example a Yagi
+  antenna on a 75 Ohm cable. The firmware adjusts the antenna input to your
+  antenna.
+* ESD protection on the antenna input
+* A connector for an external Wi-Fi antenna, for a good Wi-Fi signal also in
+  a metal case
 
 **Control**
 
@@ -19,13 +25,32 @@ also control it. These are the planned functions:
 * From your phone through Bluetooth LE (control only, no audio)
 * From a smart home system, for example Home Assistant (MQTT), also as a
   player for the audio of Home Assistant
-* Headers for a display, a rotary encoder, buttons and an IR receiver for a
+* A rotary encoder with a push button, 7 buttons and an IR receiver for a
   remote control
-* Clock and alarm, with the time from DAB or from the internet
+* The controls header also has I2C and 3.3 V, for example for a light sensor
+  for automatic dimming of the display
+* Clock and alarm, with the time from DAB or from the internet. A real-time
+  clock on the board keeps the time when the power goes. With an optional
+  supercapacitor, it keeps the time for some days without power.
+
+**Display**
+
+* A display header with SPI for the picture and I2C, for example for a touch
+  panel
+* Dimming of the display with PWM, for example at night or in standby. A
+  logic output for displays with a backlight driver, and a transistor output
+  for displays with no backlight driver.
+* The firmware controls the reset of the display
+* The board switches off the supply of the display when the radio is off
 
 **Sound**
 
-* Line output and an optical SPDIF (Toslink) output
+* Line output and an SPDIF output: coaxial, or optical with a Toslink module
+* High sound quality: each supply of the DAC has its own low-noise
+  regulator, and the output filter has film capacitors
+* No click in the speakers when you disconnect the power: the board detects
+  the power loss and mutes the DAC before the supply stops
+* Volume control in the firmware
 * An expansion connector for audio modules: you select a headphone amplifier
   or a speaker amplifier for your project, to your preferences
 * Or a Bluetooth module on the same connector, which sends the audio to
@@ -33,7 +58,17 @@ also control it. These are the planned functions:
 
 **Power**
 
-* USB-C, a DC input from 5 V to 16 V, or the supply of the host board
+* Only a regulated 5 V supply. USB-C does not supply power: it is only for
+  programming
+* Standby to save energy: the firmware switches off the radio receiver, the
+  DAC and the supply of the modules on the headers. The ESP32-S3 can go to
+  deep sleep.
+* A button, the rotary encoder or the alarm of the clock switches the radio
+  on again. The remote control can also do this when the ESP32-S3 is not in
+  deep sleep.
+* Protection against a supply with the wrong polarity. When the power goes,
+  the board puts the radio receiver into reset before the supply voltages
+  change.
 
 **For makers**
 
@@ -41,7 +76,10 @@ also control it. These are the planned functions:
   source DABDUINO library controls the radio and the other parts of the
   board.
 * Or use the board as a radio for Arduino, STM32, Raspberry Pi and other
-  boards, through UART or I2C, with any logic voltage from 1.8 V to 5 V
+  boards, through UART with an interrupt line and a reset line, with any
+  logic voltage from 1.8 V to 5 V
+* All connections are on 2.54 mm pin headers: display, controls, IR
+  receiver, audio modules, line output, SPDIF and host board
 * Firmware updates through Wi-Fi (OTA) or USB-C
 * Open hardware and open source firmware. The firmware of the radio receiver
   is installed in the flash memory of the board.
